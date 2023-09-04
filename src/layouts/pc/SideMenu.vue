@@ -18,9 +18,12 @@
         :options="menuOptions"
       />
 
-      <div class="mt-auto px-[16px] pb-[24px]">
-        当前后端版本
+      <div class="mt-auto px-[16px] pb-[24px]" @click="() => setCurrentApi('默认')">
+        当前后端版本: {{ currentApi?.url }}
       </div>
+      <n-button @click="getaaa">
+        123
+      </n-button>
     </div>
   </n-layout-sider>
 </template>
@@ -30,8 +33,17 @@ import type { MenuOption } from 'naive-ui';
 import { h, ref } from 'vue';
 import { RouterLink } from 'vue-router';
 
+import { useBackendApiUrl } from '../../hooks/useBackendApiUrl';
+import { service } from '../../utils/service';
+
+const { currentApi, addApi, setCurrentApi } = useBackendApiUrl();
+
 const collapsed = ref(false);
 const activeKey = ref('home');
+
+const getaaa = async () => {
+  await service.get('/api/utils/env');
+};
 
 const menuOptions: MenuOption[] = [
   {
