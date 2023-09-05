@@ -18,12 +18,9 @@
         :options="menuOptions"
       />
 
-      <div class="mt-auto px-[16px] pb-[24px]" @click="() => setCurrentApi('默认')">
-        当前后端版本: {{ currentApi?.url }}
+      <div class="mt-auto px-[16px] pb-[24px]">
+        当前后端版本: {{ currentApi?.name }}
       </div>
-      <n-button @click="getaaa">
-        123
-      </n-button>
     </div>
   </n-layout-sider>
 </template>
@@ -34,16 +31,11 @@ import { h, ref } from 'vue';
 import { RouterLink } from 'vue-router';
 
 import { useBackendApiUrl } from '../../hooks/useBackendApiUrl';
-import { service } from '../../utils/service';
 
-const { currentApi, addApi, setCurrentApi } = useBackendApiUrl();
+const { currentApi } = useBackendApiUrl();
 
 const collapsed = ref(false);
 const activeKey = ref('home');
-
-const getaaa = async () => {
-  await service.get('/api/utils/env');
-};
 
 const menuOptions: MenuOption[] = [
   {
@@ -51,7 +43,10 @@ const menuOptions: MenuOption[] = [
     label: () => h(RouterLink, { to: '/home' }, { default: () => '首页' }),
     icon: () => h('div', { class: 'i-carbon-home' }),
   },
-  { key: 'divider-1', type: 'divider' },
+  {
+    key: 'divider-1',
+    type: 'divider',
+  },
   {
     key: 'sub',
     label: () => h(RouterLink, { to: '/sub' }, { default: () => '订阅管理' }),

@@ -1,7 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
-import { getRouteComponent } from './componentsMap.ts';
-
 declare module 'vue-router' {
   // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
   interface RouteMeta {
@@ -19,7 +17,7 @@ export const router = createRouter({
         {
           path: '/home',
           name: 'Home',
-          component: getRouteComponent({ keys: ['home'] }),
+          component: () => import('../pages/Home/index.vue'),
           meta: {
             title: '首页',
           },
@@ -27,7 +25,7 @@ export const router = createRouter({
         {
           path: '/sub',
           name: 'Sub',
-          component: getRouteComponent({ keys: ['sub'] }),
+          component: () => import('../pages/Sub/index.vue'),
           meta: {
             title: '订阅管理',
           },
@@ -37,7 +35,7 @@ export const router = createRouter({
     {
       path: '/:pathMatch(.*)*',
       name: 'NotFound',
-      component: getRouteComponent({ keys: ['error', 'notFound'] }),
+      component: () => import('../pages/Error/NotFound/index.vue'),
       meta: {
         title: '404',
       },
