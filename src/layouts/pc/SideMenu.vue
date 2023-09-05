@@ -3,9 +3,8 @@
     bordered
     collapse-mode="width"
     :collapsed-width="64"
-    :width="240"
+    :width="200"
     :collapsed="collapsed"
-    show-trigger
     @collapse="collapsed = true"
     @expand="collapsed = false"
   >
@@ -19,13 +18,20 @@
       />
 
       <div class="mt-auto px-[16px] pb-[24px]">
-        当前后端: {{ env?.backend }} - {{ env?.version }}
-        <p @click="setCurrentApi('123')">
-          {{ currentApi?.url }}
-        </p>
-        <p @click="setCurrentApi('默认')">
-          {{ loading }}
-        </p>
+        <div v-if="!collapsed">
+          <p class="text-text-1 dark:text-[#fff]">
+            {{ env?.backend }} - {{ env?.version }}
+          </p>
+          <p
+            class="text-text-4 dark:text-[#fff3]"
+            @click="setCurrentApi('123')"
+          >
+            {{ currentApi?.name }}
+          </p>
+        </div>
+        <div v-else>
+          <p>{{ env?.backend }}</p>
+        </div>
       </div>
     </div>
   </n-layout-sider>

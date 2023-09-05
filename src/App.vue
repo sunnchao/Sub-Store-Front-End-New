@@ -1,6 +1,6 @@
 <template>
   <template v-if="isPc">
-    <n-config-provider :theme="theme" class="h-full">
+    <n-config-provider :theme="theme" class="h-full" :class="osThemeRef">
       <n-message-provider>
         <NaiveConfig />
       </n-message-provider>
