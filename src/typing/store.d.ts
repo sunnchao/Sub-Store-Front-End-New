@@ -1,5 +1,5 @@
 declare namespace Store {
   type AppState = {
-    xxx: string;
-  }
+    env: Utils.Env | null;
+  };
 }

@@ -19,7 +19,13 @@
       />
 
       <div class="mt-auto px-[16px] pb-[24px]">
-        当前后端版本: {{ currentApi?.name }}
+        当前后端: {{ env?.backend }} - {{ env?.version }}
+        <p @click="setCurrentApi('123')">
+          {{ currentApi?.url }}
+        </p>
+        <p @click="setCurrentApi('默认')">
+          {{ loading }}
+        </p>
       </div>
     </div>
   </n-layout-sider>
@@ -27,12 +33,16 @@
 
 <script setup lang="ts">
 import type { MenuOption } from 'naive-ui';
+import { storeToRefs } from 'pinia';
 import { h, ref } from 'vue';
 import { RouterLink } from 'vue-router';
 
 import { useBackendApiUrl } from '../../hooks/useBackendApiUrl';
+import { useRequest } from '../../hooks/useRequest.ts';
+import { useResponsiveRequestData } from '../../hooks/useResponsiveRequestData.ts';
+import { useAppStore } from '../../store/useAppStore.ts';
 
-const { currentApi } = useBackendApiUrl();
+const { currentApi, setCurrentApi } = useBackendApiUrl();
 
 const collapsed = ref(false);
 const activeKey = ref('home');
@@ -63,4 +73,12 @@ const menuOptions: MenuOption[] = [
     icon: () => h('div', { class: 'i-carbon-settings' }),
   },
 ];
+
+const { env } = storeToRefs(useAppStore());
+const { setEnv } = useAppStore();
+const { utilsApi } = useRequest();
+const { data, error, loading } = useResponsiveRequestData(
+  () => utilsApi.getEnv(),
+  { onSucceed: d => setEnv(d) },
+);
 </script>
