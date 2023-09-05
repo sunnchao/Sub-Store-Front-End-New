@@ -22,12 +22,12 @@
           <p class="text-text-1 dark:text-[#fff]">
             {{ env?.backend }} - {{ env?.version }}
           </p>
-          <p
-            class="text-text-4 dark:text-[#fff3]"
-            @click="setCurrentApi('123')"
-          >
-            {{ currentApi?.name }}
-          </p>
+          <!--          <p -->
+          <!--            class="text-text-4 dark:text-[#fff3]" -->
+          <!--            @click="setCurrentApi('123')" -->
+          <!--          > -->
+          <!--            {{ currentApi?.url }} -->
+          <!--          </p> -->
         </div>
         <div v-else>
           <p>{{ env?.backend }}</p>
@@ -40,7 +40,7 @@
 <script setup lang="ts">
 import type { MenuOption } from 'naive-ui';
 import { storeToRefs } from 'pinia';
-import { h, ref } from 'vue';
+import { h, onMounted, ref } from 'vue';
 import { RouterLink } from 'vue-router';
 
 import { useBackendApiUrl } from '../../hooks/useBackendApiUrl';
@@ -51,7 +51,7 @@ import { useAppStore } from '../../store/useAppStore.ts';
 const { currentApi, setCurrentApi } = useBackendApiUrl();
 
 const collapsed = ref(false);
-const activeKey = ref('home');
+const activeKey = ref('');
 
 const menuOptions: MenuOption[] = [
   {
@@ -83,8 +83,11 @@ const menuOptions: MenuOption[] = [
 const { env } = storeToRefs(useAppStore());
 const { setEnv } = useAppStore();
 const { utilsApi } = useRequest();
-const { data, error, loading } = useResponsiveRequestData(
-  () => utilsApi.getEnv(),
-  { onSucceed: d => setEnv(d) },
-);
+useResponsiveRequestData(() => utilsApi.getEnv(), {
+  onSucceed: d => setEnv(d),
+});
+
+onMounted(() => {
+  activeKey.value = window.location.pathname.slice(1);
+});
 </script>

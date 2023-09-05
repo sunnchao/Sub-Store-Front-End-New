@@ -6,7 +6,7 @@ import { useScreen } from './useScreen';
 export const useRequest = () => {
   const { isPc } = useScreen();
 
-  const onerror = (err: AxiosError<APIRes.Error | string>) => {
+  const onError = (err: AxiosError<APIRes.Error | string>) => {
     let content = err.message;
     const errData = err.response?.data;
     errData
@@ -20,17 +20,19 @@ export const useRequest = () => {
   };
 
   const subApi = {
+    getSubs: () => getData<Subscription.Subs>('/api/subs', { onError }),
+    getCollections: () =>
+      getData<Subscription.Collections>('/api/collections', { onError }),
     getFlow: (name: string) =>
-      getData<Subscription.Flow>(`/api/sub/flow/${name}`, { onError: onerror }),
+      getData<Subscription.Flow>(`/api/sub/flow/${name}`, { onError }),
   };
 
   const settingApi = {
-    getSetting: () =>
-      getData<Settings.Response>('/api/settings', { onError: onerror }),
+    getSetting: () => getData<Settings.Response>('/api/settings', { onError }),
   };
 
   const utilsApi = {
-    getEnv: () => getData<Utils.Env>('/api/utils/env', { onError: onerror }),
+    getEnv: () => getData<Utils.Env>('/api/utils/env', { onError }),
   };
 
   return {
