@@ -30,6 +30,14 @@ export const router = createRouter({
             title: '订阅管理',
           },
         },
+        {
+          path: '/settings',
+          name: 'Settings',
+          component: () => import('../pages/Settings/index.vue'),
+          meta: {
+            title: '设置',
+          },
+        },
       ],
     },
     {

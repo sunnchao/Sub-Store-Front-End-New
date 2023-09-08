@@ -1,33 +1,35 @@
 <template>
-  <div
-    v-if="!subs.length && !collections.length"
-    class="min-h-[320px] flex items-center justify-center"
-  >
-    <n-spin
-      v-if="props.isSubLoading || props.isCollectionLoading"
-      size="medium"
-    />
-
-    <n-empty v-else description="暂无订阅" size="huge">
-      <template #icon>
-        <i class="i-solar-confounded-square-bold-duotone block" />
-      </template>
-      <template #extra>
-        <n-button size="small">
-          新增订阅
-        </n-button>
-      </template>
-    </n-empty>
-  </div>
-
   <div>
-    <SubPageCardList title="单条订阅" data-type="subs" />
+    <div
+      v-if="!subs.length && !collections.length"
+      class="min-h-[320px] flex items-center justify-center"
+    >
+      <n-spin
+        v-if="props.isSubLoading || props.isCollectionLoading"
+        size="medium"
+      />
 
-    <SubPageCardList
-      margin-top="48px"
-      title="组合订阅"
-      data-type="collections"
-    />
+      <n-empty v-else description="暂无订阅" size="huge">
+        <template #icon>
+          <i class="i-solar-confounded-square-bold-duotone block" />
+        </template>
+        <template #extra>
+          <n-button size="small">
+            新增订阅
+          </n-button>
+        </template>
+      </n-empty>
+    </div>
+
+    <div>
+      <SubPageCardList title="单条订阅" data-type="subs" />
+
+      <SubPageCardList
+        margin-top="48px"
+        title="组合订阅"
+        data-type="collections"
+      />
+    </div>
   </div>
 </template>
 

@@ -1,10 +1,10 @@
 <template>
-  <h1
+  <h2
     class="mb-[12px] text-[18px] font-bold"
     :style="{ marginTop: props.marginTop ?? '0' }"
   >
     {{ props.title }}
-  </h1>
+  </h2>
   <n-grid :x-gap="12" :y-gap="12" cols="1 600:2 900:3 1200:4 1500:5 1800:6">
     <template v-if="props.dataType === 'subs'">
       <n-grid-item v-for="sub in subs" :key="sub.name">
