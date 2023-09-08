@@ -1,5 +1,5 @@
 import type { AxiosError } from 'axios';
-import { onUnmounted, ref, watchEffect } from 'vue';
+import { onBeforeUnmount, ref, watchEffect } from 'vue';
 
 import { useBackendApiUrl } from './useBackendApiUrl';
 
@@ -36,7 +36,7 @@ export const useResponsiveRequestData = <T>(
   const stop = watchEffect(() => {
     currentApi.value && request();
   });
-  onUnmounted(() => {
+  onBeforeUnmount(() => {
     stop();
   });
 

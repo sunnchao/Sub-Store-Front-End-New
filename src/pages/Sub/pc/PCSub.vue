@@ -25,7 +25,7 @@
       title="单条订阅"
       :subs="props.subs"
       :collections="props.collections"
-      :default-icon="defaultIcon"
+      :default-icon="appLogo.rounded.value"
       data-type="subs"
     />
 
@@ -35,16 +35,13 @@
       title="组合订阅"
       :subs="props.subs"
       :collections="props.collections"
-      :default-icon="defaultIcon"
+      :default-icon="appLogo.shape.value"
       data-type="collections"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-import { useOsTheme } from 'naive-ui';
-import { computed } from 'vue';
-
 import { useLogo } from '../../../hooks/useLogo.ts';
 import SubPageCardList from './components/SubPageCardList.vue';
 
@@ -55,11 +52,5 @@ const props = defineProps<{
   isCollectionLoading: boolean
 }>();
 
-const {
-  logo: { darkShape, lightShape },
-} = useLogo();
-const theme = useOsTheme();
-const defaultIcon = computed(() =>
-  theme.value === 'dark' ? darkShape : lightShape,
-);
+const { appLogo } = useLogo();
 </script>
