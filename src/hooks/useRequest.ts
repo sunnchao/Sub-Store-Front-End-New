@@ -1,10 +1,10 @@
 import type { AxiosError } from 'axios';
 
 import { getData } from '../utils/service';
-import { useScreen } from './useScreen';
+import { useMessage } from './useMessage.tsx';
 
 export const useRequest = () => {
-  const { isPc } = useScreen();
+  const { showMessage } = useMessage();
 
   const onError = (err: AxiosError<APIRes.Error | string>) => {
     let content = err.message;
@@ -12,11 +12,10 @@ export const useRequest = () => {
     errData
       && (content = typeof errData === 'string' ? errData : errData.error.message);
 
-    if (isPc.value) {
-      window.$pcMessage.error(content);
-    } else {
-      console.log('mobile err: ', content);
-    }
+    showMessage({
+      type: 'error',
+      message: content,
+    });
   };
 
   const subApi = {

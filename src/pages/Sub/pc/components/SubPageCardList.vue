@@ -10,7 +10,9 @@
       <n-grid-item v-for="sub in props.subs" :key="sub.name">
         <SubItem :sub="sub" :default-icon="defaultIcon">
           <template #action>
-            <n-button>123</n-button>
+            <n-button size="small" @click="copyLink(sub.name)">
+              复制通用订阅
+            </n-button>
           </template>
         </SubItem>
       </n-grid-item>
@@ -27,7 +29,9 @@
           :subs="props.subs"
         >
           <template #action>
-            <n-button>456</n-button>
+            <n-button size="small" @click="copyLink(collection.name, true)">
+              复制通用订阅
+            </n-button>
           </template>
         </CollectionItem>
       </n-grid-item>
@@ -36,6 +40,8 @@
 </template>
 
 <script setup lang="ts">
+import { useBackendApiUrl } from '../../../../hooks/useBackendApiUrl.ts';
+import { useMessage } from '../../../../hooks/useMessage.tsx';
 import CollectionItem from './CollectionItem.vue';
 import SubItem from './SubItem.vue';
 
@@ -47,4 +53,27 @@ const props = defineProps<{
   dataType: 'subs' | 'collections'
   marginTop?: string
 }>();
+
+const { showMessage } = useMessage();
+const { currentApi } = useBackendApiUrl();
+const copyLink = (name: string, isCollection?: boolean) => {
+  if (!currentApi.value) {
+    showMessage({
+      type: 'error',
+      message: '后端 API 地址无效！请检查后端',
+    });
+    return;
+  }
+
+  console.log(
+    `${currentApi.value.url}/download/${
+      isCollection ? 'collection/' : ''
+    }${name}`,
+  );
+  const { displayName } = props.subs.find(sub => sub.name === name)!;
+  showMessage({
+    type: 'success',
+    message: `复制【${displayName}】通用订阅链接成功！`,
+  });
+};
 </script>

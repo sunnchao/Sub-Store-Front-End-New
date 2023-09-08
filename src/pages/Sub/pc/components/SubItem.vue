@@ -33,7 +33,9 @@
         </n-tag>
       </template>
 
-      <div class="h-[48px] flex items-center py-[8px] text-text-3">
+      <div
+        class="h-[48px] flex items-center py-[8px] text-text-3 dark:text-[#fffa]"
+      >
         <div
           v-if="flow.status === 'loading'"
           class="w-full flex items-center gap-x-[8px]"
@@ -49,9 +51,9 @@
           <i
             class="i-solar-confounded-square-bold-duotone text-[24px] opacity-72"
           />
-          <span>流量获取失败：<span class="text-text-2">{{
-            flow.error
-          }}</span></span>
+          <span>流量获取失败：<span class="text-text-2 dark:text-[#fffd]">
+            {{ flow.error }}</span>
+          </span>
         </div>
 
         <div

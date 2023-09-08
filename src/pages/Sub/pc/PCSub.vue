@@ -13,7 +13,7 @@
       </template>
       <template #extra>
         <n-button size="small">
-          看看别的
+          新增订阅
         </n-button>
       </template>
     </n-empty>
@@ -56,10 +56,10 @@ const props = defineProps<{
 }>();
 
 const {
-  logo: { darkRounded, lightRounded },
+  logo: { darkShape, lightShape },
 } = useLogo();
 const theme = useOsTheme();
 const defaultIcon = computed(() =>
-  theme.value === 'dark' ? darkRounded : lightRounded,
+  theme.value === 'dark' ? darkShape : lightShape,
 );
 </script>
