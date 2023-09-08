@@ -2,13 +2,7 @@
   <SubPageItemCard>
     <n-thing>
       <template #avatar>
-        <div class="aspect-1 w-[36px]">
-          <img
-            :src="props.collection.icon || props.defaultIcon"
-            alt="sub icon"
-            class="h-full w-full object-contain"
-          >
-        </div>
+        <AutoImage :src="props.collection.icon" />
       </template>
       <template #header>
         {{ props.collection.displayName }}
@@ -20,10 +14,10 @@
           class="mr-[16px] inline-flex items-center gap-x-[4px]"
         >
           <i
-            class="i-carbon-direct-link inline-block text-text-4 dark:text-[#fff6]"
+            class="i-carbon-direct-link inline-block text-primary-light opacity-80 dark:text-primary-dark"
           />
           <span class="text-text-3 dark:text-[#fff9]">
-            {{ props.subs.find((sub) => sub.name === name)?.displayName }}
+            {{ getSubName(name) }}
           </span>
         </span>
       </div>
@@ -35,11 +29,19 @@
 </template>
 
 <script setup lang="ts">
+import { storeToRefs } from 'pinia';
+
+import AutoImage from '../../../../components/pc/AutoImage.vue';
+import { useSubscriptionStore } from '../../../../store/useSubscriptionStore.ts';
 import SubPageItemCard from './SubPageItemCard.vue';
 
 const props = defineProps<{
-  subs: Subscription.Subs
   collection: Subscription.Collection
-  defaultIcon: string
 }>();
+
+const subscriptionStore = useSubscriptionStore();
+const { subs } = storeToRefs(subscriptionStore);
+const getSubName = (collectionName: string) => {
+  return subs.value.find(sub => sub.name === collectionName)?.displayName;
+};
 </script>

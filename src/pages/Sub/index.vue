@@ -1,8 +1,6 @@
 <template>
   <PCSub
     v-if="isPc"
-    :subs="subs"
-    :collections="collections"
     :is-sub-loading="subLoading"
     :is-collection-loading="collectionLoading"
   />
@@ -24,7 +22,7 @@ const { isPc } = useScreen();
 
 const subscriptionStore = useSubscriptionStore();
 const { setSubs, setCollections } = subscriptionStore;
-const { subs, collections } = storeToRefs(subscriptionStore);
+const { subs } = storeToRefs(subscriptionStore);
 
 const { subApi } = useRequest();
 const { loading: subLoading } = useResponsiveRequestData(

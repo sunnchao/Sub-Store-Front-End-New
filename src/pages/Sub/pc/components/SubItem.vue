@@ -2,13 +2,7 @@
   <SubPageItemCard>
     <n-thing>
       <template #avatar>
-        <div class="aspect-1 w-[36px]">
-          <img
-            :src="props.sub.icon || props.defaultIcon"
-            alt="sub icon"
-            class="h-full w-full object-contain"
-          >
-        </div>
+        <AutoImage :src="props.sub.icon" />
       </template>
       <template #header>
         {{ props.sub.displayName }}
@@ -37,39 +31,49 @@
         class="h-[48px] flex items-center py-[8px] text-text-3 dark:text-[#fffa]"
       >
         <div
-          v-if="flow.status === 'loading'"
-          class="w-full flex items-center gap-x-[8px]"
-        >
-          <n-spin size="small" />
-          <span>正在获取流量信息...</span>
-        </div>
-
-        <div
-          v-else-if="flow.status === 'error'"
+          v-if="props.sub.source === 'local'"
           class="w-full flex items-center gap-x-[4px]"
         >
-          <i
-            class="i-solar-confounded-square-bold-duotone text-[24px] opacity-72"
-          />
-          <span>流量获取失败：<span class="text-text-2 dark:text-[#fffd]">
-            {{ flow.error }}</span>
-          </span>
+          <i class="i-solar-smile-square-bold-duotone text-[24px] opacity-72" />
+          <span>本地订阅无流量信息哦～</span>
         </div>
 
-        <div
-          v-else-if="flow.status === 'success'"
-          class="w-full flex flex-col justify-center gap-y-[2px]"
-        >
-          <span class="flex items-center justify-between"><span>{{ progress.usageText }}</span><span>{{ progress.remainingText }}</span></span>
-          <n-progress
-            type="line"
-            :status="progress.progressType"
-            :percentage="progress.percentage"
-            indicator-placement="outside"
+        <template v-else-if="props.sub.source === 'remote'">
+          <div
+            v-if="flow.status === 'loading'"
+            class="w-full flex items-center gap-x-[8px]"
           >
-            {{ progress.percentage.toFixed() }}%
-          </n-progress>
-        </div>
+            <n-spin size="small" />
+            <span>正在获取流量信息...</span>
+          </div>
+
+          <div
+            v-else-if="flow.status === 'error'"
+            class="w-full flex items-center gap-x-[4px]"
+          >
+            <i
+              class="i-solar-confounded-square-bold-duotone text-[24px] opacity-72"
+            />
+            <span>流量获取失败：<span class="text-text-2 dark:text-[#fffd]">
+              {{ flow.error }}</span>
+            </span>
+          </div>
+
+          <div
+            v-else-if="flow.status === 'success'"
+            class="w-full flex flex-col justify-center gap-y-[4px]"
+          >
+            <span class="flex items-center justify-between"><span>{{ progress.usageText }}</span><span>{{ progress.remainingText }}</span></span>
+            <n-progress
+              type="line"
+              :status="progress.progressType"
+              :percentage="progress.percentage"
+              :show-indicator="false"
+            >
+              {{ progress.percentage.toFixed() }}%
+            </n-progress>
+          </div>
+        </template>
       </div>
 
       <template #action>
@@ -83,13 +87,13 @@
 import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
 
+import AutoImage from '../../../../components/pc/AutoImage.vue';
 import { useSubscriptionStore } from '../../../../store/useSubscriptionStore.ts';
 import { formatFlow } from '../../../../utils/formatFlow.ts';
 import SubPageItemCard from './SubPageItemCard.vue';
 
 const props = defineProps<{
   sub: Subscription.Sub
-  defaultIcon: string
 }>();
 
 const subscriptionStore = useSubscriptionStore();
