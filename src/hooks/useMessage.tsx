@@ -32,7 +32,7 @@ export const useMessage = () => {
           break;
       }
     } else {
-      alert(options.message);
+      window.alert(options.message);
     }
   };
 

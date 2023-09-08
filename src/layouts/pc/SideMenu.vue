@@ -43,12 +43,9 @@ import { storeToRefs } from 'pinia';
 import { h, ref } from 'vue';
 import { RouterLink } from 'vue-router';
 
-import { useBackendApiUrl } from '../../hooks/useBackendApiUrl';
 import { useRequest } from '../../hooks/useRequest.ts';
 import { useResponsiveRequestData } from '../../hooks/useResponsiveRequestData.ts';
 import { useAppStore } from '../../store/useAppStore.ts';
-
-const { currentApi, setCurrentApi } = useBackendApiUrl();
 
 const collapsed = ref(false);
 const activeKey = ref('');

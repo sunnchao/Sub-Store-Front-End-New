@@ -25,7 +25,7 @@
       title="单条订阅"
       :subs="props.subs"
       :collections="props.collections"
-      :default-icon="appLogo.rounded.value"
+      :default-icon="appLogo.shape.value"
       data-type="subs"
     />
 
