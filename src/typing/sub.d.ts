@@ -28,6 +28,18 @@ declare namespace Subscription {
       download: number;
     };
   };
+  type StoreFlow =
+    | {
+        status: "loading";
+      }
+    | {
+        status: "success";
+        data: Flow;
+      }
+    | {
+        status: "error";
+        error: string;
+      };
 
   type Processor = unknown;
   type Processors = Processor[];

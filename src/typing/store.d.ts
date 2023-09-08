@@ -6,5 +6,6 @@ declare namespace Store {
   type SubscriptionState = {
     subs: Subscription.Subs;
     collections: Subscription.Collections;
+    flows: Record<string, Subscription.StoreFlow>;
   };
 }

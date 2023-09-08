@@ -40,7 +40,7 @@
 <script setup lang="ts">
 import type { MenuOption } from 'naive-ui';
 import { storeToRefs } from 'pinia';
-import { h, onMounted, ref } from 'vue';
+import { h, ref } from 'vue';
 import { RouterLink } from 'vue-router';
 
 import { useBackendApiUrl } from '../../hooks/useBackendApiUrl';
@@ -85,9 +85,5 @@ const { setEnv } = useAppStore();
 const { utilsApi } = useRequest();
 useResponsiveRequestData(() => utilsApi.getEnv(), {
   onSucceed: d => setEnv(d),
-});
-
-onMounted(() => {
-  activeKey.value = window.location.pathname.slice(1);
 });
 </script>

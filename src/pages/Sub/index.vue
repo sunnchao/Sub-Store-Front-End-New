@@ -1,10 +1,17 @@
 <template>
-  <PCSub v-if="isPc" :subs="subs" :collections="collections" />
+  <PCSub
+    v-if="isPc"
+    :subs="subs"
+    :collections="collections"
+    :is-sub-loading="subLoading"
+    :is-collection-loading="collectionLoading"
+  />
   <H5Sub v-else />
 </template>
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
+import { watch } from 'vue';
 
 import { useRequest } from '../../hooks/useRequest.ts';
 import { useResponsiveRequestData } from '../../hooks/useResponsiveRequestData.ts';
@@ -20,10 +27,19 @@ const { setSubs, setCollections } = subscriptionStore;
 const { subs, collections } = storeToRefs(subscriptionStore);
 
 const { subApi } = useRequest();
-useResponsiveRequestData(() => subApi.getSubs(), {
-  onSucceed: setSubs,
-});
-useResponsiveRequestData(() => subApi.getCollections(), {
-  onSucceed: setCollections,
+const { loading: subLoading } = useResponsiveRequestData(
+  () => subApi.getSubs(),
+  { onSucceed: setSubs },
+);
+const { loading: collectionLoading } = useResponsiveRequestData(
+  () => subApi.getCollections(),
+  { onSucceed: setCollections },
+);
+
+const stop = watch(subs, (newSubs, oldSubs) => {
+  if (newSubs.length && !oldSubs.length) {
+    stop();
+    subscriptionStore.getFlows();
+  }
 });
 </script>
