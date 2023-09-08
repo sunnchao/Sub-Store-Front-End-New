@@ -18,4 +18,11 @@ declare namespace Settings {
     syncTime: number;
     // theme: { auto: boolean; name: "light"; dark: "dark"; light: "light" };
   };
+
+  type Local = {
+    isCompactMode: boolean;
+    isOriginalIcon: boolean;
+    isShowCommonSettings: boolean;
+    isShowSyncTab: boolean;
+  };
 }
