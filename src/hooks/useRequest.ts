@@ -6,15 +6,19 @@ import { useMessage } from './useMessage.tsx';
 export const useRequest = () => {
   const { showMessage } = useMessage();
 
-  const onError = (err: AxiosError<APIRes.Error | string>) => {
+  const parseError = (err: AxiosError<APIRes.Error | string>) => {
     let content = err.message;
     const errData = err.response?.data;
-    errData
-      && (content = typeof errData === 'string' ? errData : errData.error.message);
+    if (errData) {
+      content = typeof errData === 'string' ? errData : errData.error.message;
+    }
+    return { error: err, message: content };
+  };
 
+  const onError = (err: AxiosError<APIRes.Error | string>) => {
     showMessage({
       type: 'error',
-      message: content,
+      message: parseError(err).message,
     });
   };
 
@@ -38,5 +42,6 @@ export const useRequest = () => {
     subApi,
     settingApi,
     utilsApi,
+    parseError,
   };
 };

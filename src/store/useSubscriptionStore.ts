@@ -1,4 +1,3 @@
-import type { AxiosError } from 'axios';
 import { defineStore } from 'pinia';
 
 import { useRequest } from '../hooks/useRequest.ts';
@@ -19,8 +18,14 @@ export const useSubscriptionStore = defineStore('subscription', {
       this.collections = collections;
     },
     getFlows() {
-      const { subApi } = useRequest();
-      const urlList = [...new Set(this.subs.map(sub => sub.url))];
+      const { subApi, parseError } = useRequest();
+      const urlList = [
+        ...new Set(
+          this.subs
+            .filter(sub => sub.source === 'remote')
+            .map(sub => sub.url),
+        ),
+      ];
       // 遍历请求流量
       for (const url of urlList) {
         const isExist = this.flows[url];
@@ -31,13 +36,10 @@ export const useSubscriptionStore = defineStore('subscription', {
           .getFlow(name)
           .then(flow => (this.flows[url] = { status: 'success', data: flow }))
           .catch((err) => {
-            const e = err as AxiosError<APIRes.Error | string>;
-            let content = e.message;
-            const errData = e.response?.data;
-            errData
-              && (content
-                = typeof errData === 'string' ? errData : errData.error.message);
-            this.flows[url] = { status: 'error', error: content };
+            this.flows[url] = {
+              status: 'error',
+              error: parseError(err).message,
+            };
           });
       }
     },
