@@ -7,12 +7,32 @@ export default defineConfig({
   ],
   theme: {
     colors: {
-      'primary-light': '#18A058',
-      'primary-dark': '#63E2B7',
-      'text-1': '#181818',
-      'text-2': '#303133',
-      'text-3': '#606266',
-      'text-4': '#C0C4CC',
+      primary: {
+        light: '#18A058',
+        dark: '#63E2B7',
+      },
+      text: {
+        primary: {
+          light: '#181818',
+          dark: '#FFFFFFF0',
+        },
+        secondary: {
+          light: '#303133',
+          dark: '#FFFFFFB3',
+        },
+        tertiary: {
+          light: '#606266',
+          dark: '#FFFFFF66',
+        },
+        quaternary: {
+          light: '#909399',
+          dark: '#FFFFFF33',
+        },
+      },
+      divider: {
+        light: '#0001',
+        dark: '#fff1',
+      },
     },
   },
   presets: [presetUno(), presetIcons()],

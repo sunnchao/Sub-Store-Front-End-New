@@ -28,7 +28,7 @@
       </template>
 
       <div
-        class="h-[48px] flex items-center py-[8px] text-text-3 dark:text-[#fffa]"
+        class="text-text-tertiary-light dark:text-text-tertiary-dark h-[48px] flex items-center py-[8px]"
       >
         <div
           v-if="props.sub.source === 'local'"
@@ -54,7 +54,9 @@
             <i
               class="i-solar-confounded-square-bold-duotone text-[24px] opacity-72"
             />
-            <span>流量获取失败：<span class="text-text-2 dark:text-[#fffd]">
+            <span>流量获取失败：<span
+              class="text-text-secondary-light dark:text-text-secondary-dark"
+            >
               {{ flow.error }}</span>
             </span>
           </div>

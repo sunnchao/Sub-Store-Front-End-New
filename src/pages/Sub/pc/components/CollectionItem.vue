@@ -16,7 +16,7 @@
           <i
             class="i-carbon-direct-link inline-block text-primary-light opacity-80 dark:text-primary-dark"
           />
-          <span class="text-text-3 dark:text-[#fff9]">
+          <span class="text-text-tertiary-light dark:text-text-tertiary-dark">
             {{ getSubName(name) }}
           </span>
         </span>

@@ -19,7 +19,7 @@
 
       <div class="mt-auto px-[16px] pb-[24px]">
         <div v-if="!collapsed">
-          <p class="text-text-1 dark:text-[#fff]">
+          <p class="text-text-primary-light dark:text-text-primary-dark">
             {{ env?.backend }} - {{ env?.version }}
           </p>
           <!--          <p -->

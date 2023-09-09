@@ -7,7 +7,9 @@
 
       <n-layout-content class="overflow-auto">
         <main class="px-[36px] py-[24px]">
-          <h1 class="text-[22px] font-bold text-text-2">
+          <h1
+            class="text-text-primary-light dark:text-text-primary-dark text-[22px] font-bold"
+          >
             {{ title }}
           </h1>
           <n-divider class="my-[16px]" />
@@ -34,10 +36,7 @@ const title = computed(() => route.meta.title);
 </script>
 
 <style scoped>
-.fade-enter-active {
-  transition: all 0.2s;
-}
-
+.fade-enter-active,
 .fade-leave-active {
   transition: all 0.1s;
 }
