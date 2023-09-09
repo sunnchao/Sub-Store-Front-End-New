@@ -9,7 +9,7 @@
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import { watch } from 'vue';
+import { onBeforeUnmount, watch } from 'vue';
 
 import { useRequest } from '../../hooks/useRequest.ts';
 import { useResponsiveRequestData } from '../../hooks/useResponsiveRequestData.ts';
@@ -34,10 +34,10 @@ const { loading: collectionLoading } = useResponsiveRequestData(
   { onSucceed: setCollections },
 );
 
-const stop = watch(subs, (newSubs, oldSubs) => {
-  if (newSubs.length && !oldSubs.length) {
-    stop();
-    subscriptionStore.getFlows();
-  }
+const stop = watch(subs, () => {
+  subscriptionStore.getFlows();
+});
+onBeforeUnmount(() => {
+  stop();
 });
 </script>

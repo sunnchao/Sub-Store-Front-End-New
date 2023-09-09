@@ -22,6 +22,7 @@ export const useSubscriptionStore = defineStore('subscription', {
       const urlList = [
         ...new Set(
           this.subs
+            .filter(sub => this.flows[sub.url]?.status !== 'success')
             .filter(sub => sub.source === 'remote')
             .map(sub => sub.url),
         ),
@@ -34,7 +35,13 @@ export const useSubscriptionStore = defineStore('subscription', {
         const name = this.subs.find(sub => sub.url === url)!.name;
         subApi
           .getFlow(name)
-          .then(flow => (this.flows[url] = { status: 'success', data: flow }))
+          .then(
+            flow =>
+              (this.flows[url] = {
+                status: 'success',
+                data: flow,
+              }),
+          )
           .catch((err) => {
             this.flows[url] = {
               status: 'error',
