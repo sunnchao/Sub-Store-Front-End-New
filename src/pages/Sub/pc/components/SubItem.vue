@@ -28,7 +28,7 @@
       </template>
 
       <div
-        class="text-text-tertiary-light dark:text-text-tertiary-dark h-[48px] flex items-center py-[8px]"
+        class="h-[48px] flex items-center py-[8px] text-text-tertiary-light dark:text-text-tertiary-dark"
       >
         <div
           v-if="props.sub.source === 'local'"
@@ -121,11 +121,18 @@ const progress = computed(() => {
   return {
     percentage,
     progressType,
-    usageText: `${flowInfo.usage.flow.toFixed(1)}${flowInfo.usage.unit} / ${
-      flowInfo.total.flow
-    }${flowInfo.total.unit} `,
-    expiresText: flowInfo.expires.format('YYYY-MM-DD'),
-    remainingText: `${flowInfo.remainDays}天后过期`,
+    usageText: `${flowInfo.usage.flow.toFixed(1)} ${flowInfo.usage.unit} / ${
+      flowInfo.total.flow.toFixed(1).endsWith('.0')
+        ? flowInfo.total.flow.toFixed()
+        : flowInfo.total.flow.toFixed(1)
+    } ${flowInfo.total.unit} `,
+    expiresText: flowInfo.expires
+      ? flowInfo.expires.format('YYYY-MM-DD')
+      : '无到期时间',
+    remainingText:
+      flowInfo.remainDays !== null
+        ? `${flowInfo.remainDays}天后过期`
+        : '无到期时间',
   };
 });
 </script>

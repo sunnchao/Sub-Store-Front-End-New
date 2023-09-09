@@ -11,21 +11,24 @@ const transform: Transform = (flow, index = 0) => {
   if (flow > 1024) {
     return transform(flow / 1024, index + 1);
   } else {
-    return { flow, unit: unit[index] };
+    return {
+      flow,
+      unit: unit[index],
+    };
   }
 };
 
 type FormatFlow = {
-  expires: Dayjs
-  remainDays: number
+  expires: Dayjs | null
+  remainDays: number | null
   total: FormattedFlow
   usage: FormattedFlow
   remainFlow: FormattedFlow
 };
 export const formatFlow = (flow: Subscription.Flow): FormatFlow => {
   const { expires, total, usage } = flow;
-  const expiresDate = dayjs.unix(expires);
-  const remainDays = expiresDate.diff(new Date(), 'day');
+  const expiresDate = expires ? dayjs.unix(expires) : null;
+  const remainDays = expiresDate ? expiresDate.diff(new Date(), 'day') : null;
   const totalUsage = usage.upload + usage.download;
   const remainFlow = transform(total - totalUsage);
 
