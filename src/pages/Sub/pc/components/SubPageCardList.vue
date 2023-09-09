@@ -1,6 +1,6 @@
 <template>
   <h2
-    class="mb-[12px] text-[18px] font-bold"
+    class="pc-secondary-title mb-[12px]"
     :style="{ marginTop: props.marginTop ?? '0' }"
   >
     {{ props.title }}

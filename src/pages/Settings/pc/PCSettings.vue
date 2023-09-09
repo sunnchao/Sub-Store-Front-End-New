@@ -1,9 +1,7 @@
 <template>
   <div>
     <div>
-      <h2
-        class="text-[16px] font-bold text-text-secondary-light dark:text-text-secondary-dark"
-      >
+      <h2 class="pc-secondary-title">
         外观设置
       </h2>
 

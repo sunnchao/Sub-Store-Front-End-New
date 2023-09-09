@@ -3,7 +3,10 @@ import { defineConfig, presetIcons, presetUno } from 'unocss';
 
 export default defineConfig({
   shortcuts: [
-    // ...
+    {
+      'pc-secondary-title':
+        'text-[18px] font-bold text-text-secondary-light dark:text-text-secondary-dark',
+    },
   ],
   theme: {
     colors: {
