@@ -47,6 +47,65 @@
     </template>
   </n-modal>
 
+  <n-modal
+    v-model:show="manageBackendModalIsVisible"
+    :style="{ width: '600px' }"
+    title="管理后端"
+    size="large"
+    :bordered="false"
+    preset="card"
+    :segmented="{ content: 'soft', footer: 'soft' }"
+  >
+    <ul
+      v-if="backendApis.filter((sub) => sub.name !== '默认').length > 0"
+      class="max-h-[400px] overflow-auto pr-[16px]"
+    >
+      <li
+        v-for="api in backendApis.filter((sub) => sub.name !== '默认')"
+        :key="api.name"
+      >
+        <div>
+          <h2 class="flex items-center justify-between text-[16px]">
+            <span>
+              {{ api.name }}
+              <n-tag
+                v-if="api.name === currentApi.name"
+                type="primary"
+                size="small"
+              >当前</n-tag>
+            </span>
+
+            <n-popconfirm
+              positive-text="删除"
+              :positive-button-props="{ type: 'error' }"
+              negative-text="取消"
+              @positive-click="removeApi(api.name)"
+            >
+              <template #trigger>
+                <n-button size="small" text type="error">
+                  删除
+                </n-button>
+              </template>
+              确认删除后端 {{ api.name }} 吗？
+            </n-popconfirm>
+          </h2>
+          <n-ellipsis
+            class="max-w-[520px] text-[12px] text-text-quaternary-light dark:text-text-quaternary-dark"
+          >
+            {{ api.url }}
+          </n-ellipsis>
+        </div>
+        <n-divider :style="{ marginTop: '8px', marginBottom: '16px' }" />
+      </li>
+    </ul>
+    <div
+      v-else
+      class="h-[120px] flex items-center justify-center text-text-tertiary-light dark:text-text-tertiary-dark"
+    >
+      暂未添加自定义后端
+    </div>
+  </n-modal>
+
   <n-card
     embedded
     bordered
@@ -82,7 +141,7 @@
       <n-divider :style="{ marginTop: '16px', marginBottom: '12px' }" />
 
       <NPopselect
-        ref="popselect"
+        ref="popSelect"
         :value="currentApi.name"
         trigger="click"
         :options="dropdownOptions"
@@ -97,12 +156,21 @@
         </n-button>
 
         <template #action>
-          <n-button text @click="handleClickAddBackend">
-            <template #icon>
-              <i class="i-carbon-add block" />
-            </template>
-            新增后端
-          </n-button>
+          <n-space>
+            <n-button text block @click="handleClickAddBackend">
+              <template #icon>
+                <i class="i-carbon-add block" />
+              </template>
+              新增
+            </n-button>
+            <n-divider vertical />
+            <n-button text block @click="handleClickManageBackend">
+              <template #icon>
+                <i class="i-carbon-settings block text-[14px]" />
+              </template>
+              管理
+            </n-button>
+          </n-space>
         </template>
       </NPopselect>
     </div>
@@ -116,15 +184,13 @@ import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
 
 import { useBackendApiUrl } from '../../hooks/useBackendApiUrl.ts';
-import { useLogo } from '../../hooks/useLogo.ts';
 import { useMessage } from '../../hooks/useMessage.tsx';
 import { useRequest } from '../../hooks/useRequest.ts';
 import { useResponsiveRequestData } from '../../hooks/useResponsiveRequestData.ts';
 import { useAppStore } from '../../store/useAppStore.ts';
 
-const { appLogo } = useLogo();
-
-const { currentApi, backendApis, setCurrentApi, addApi } = useBackendApiUrl();
+const { currentApi, backendApis, setCurrentApi, addApi, removeApi }
+  = useBackendApiUrl();
 const { env } = storeToRefs(useAppStore());
 const { setEnv } = useAppStore();
 const { utilsApi } = useRequest();
@@ -145,8 +211,9 @@ const handleBackendApiSelect = (value: string) => {
   setCurrentApi(value);
 };
 
-const popselect = ref<any>(null);
+const popSelect = ref<any>(null);
 const addBackendModalIsVisible = ref(false);
+const manageBackendModalIsVisible = ref(false);
 const formRef = ref<FormInst | null>(null);
 const formData = ref<Settings.BackendApi>({
   name: '',
@@ -176,8 +243,12 @@ const formRules = {
   ],
 };
 const handleClickAddBackend = () => {
-  popselect.value?.setShow(false);
+  popSelect.value?.setShow(false);
   addBackendModalIsVisible.value = true;
+};
+const handleClickManageBackend = () => {
+  popSelect.value?.setShow(false);
+  manageBackendModalIsVisible.value = true;
 };
 
 const { showMessage } = useMessage();

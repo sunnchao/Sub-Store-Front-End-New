@@ -33,6 +33,10 @@ export const useBackendApiUrl = () => {
     if (!getApi(name)) return;
     const index = backendApi.value.apis.findIndex(api => api.name === name);
     backendApi.value.apis.splice(index, 1);
+    // 如果删除的是当前使用的 API，则将当前 API 设置为第一个
+    if (backendApi.value.current === name) {
+      backendApi.value.current = backendApi.value.apis[0].name;
+    }
   };
   const setCurrentApi = (name: string) => {
     if (!getApi(name)) return;

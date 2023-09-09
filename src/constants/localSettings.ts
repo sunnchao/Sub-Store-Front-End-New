@@ -8,8 +8,8 @@ const settings: Settings = {
   INITIAL: {
     isCompactMode: false,
     isOriginalIcon: false,
-    isShowCommonSettings: false,
-    isShowSyncTab: false,
+    isShowCommonSettings: true,
+    isShowSyncTab: true,
   },
 };
 

@@ -4,7 +4,7 @@
       <div class="flex items-center gap-x-[12px] text-[16px] font-bold">
         <div class="aspect-1 w-[28px]">
           <img
-            :src="appLogo.normal.value"
+            :src="appLogo.rounded.value"
             alt="logo"
             class="h-full w-full object-cover"
           >
