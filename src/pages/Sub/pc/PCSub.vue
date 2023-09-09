@@ -1,7 +1,12 @@
 <template>
   <div>
     <div
-      v-if="props.isSubLoading || props.isCollectionLoading"
+      v-if="
+        props.isSubLoading
+          && props.isCollectionLoading
+          && !subs.length
+          && !collections.length
+      "
       class="min-h-[320px] flex items-center justify-center"
     >
       <n-spin size="medium" />
