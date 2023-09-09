@@ -5,7 +5,7 @@
         <AutoImage :src="props.sub.icon" />
       </template>
       <template #header>
-        {{ props.sub.displayName }}
+        {{ props.sub.displayName || props.sub.name }}
       </template>
       <template #header-extra>
         <n-tag

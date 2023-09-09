@@ -5,7 +5,7 @@
         <AutoImage :src="props.collection.icon" />
       </template>
       <template #header>
-        {{ props.collection.displayName }}
+        {{ props.collection.displayName || props.sub.name }}
       </template>
       <div>
         <span
