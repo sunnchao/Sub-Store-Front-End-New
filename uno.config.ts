@@ -18,15 +18,15 @@ export default defineConfig({
         },
         secondary: {
           light: '#303133',
-          dark: '#FFFFFFB3',
+          dark: '#FFFFFFD0',
         },
         tertiary: {
           light: '#606266',
-          dark: '#FFFFFF66',
+          dark: '#FFFFFFB0',
         },
         quaternary: {
           light: '#909399',
-          dark: '#FFFFFF33',
+          dark: '#FFFFFF90',
         },
       },
       divider: {

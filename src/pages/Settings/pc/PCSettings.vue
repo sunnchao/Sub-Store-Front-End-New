@@ -1,21 +1,29 @@
 <template>
   <div>
     <div>
-      <h2>外观设置</h2>
+      <h2
+        class="text-[16px] font-bold text-text-secondary-light dark:text-text-secondary-dark"
+      >
+        外观设置
+      </h2>
 
-      <div>
-        <p>订阅图标展示原始颜色</p>
-        <n-switch
-          :value="localSettings.isOriginalIcon"
-          @change="(v) => (localSettings.isOriginalIcon = v)"
-        />
-      </div>
+      <Switcher
+        content="订阅图标使用原始颜色"
+        :value="localSettings.isOriginalIcon"
+        @change="(v) => (localSettings.isOriginalIcon = v)"
+      />
+      <Switcher
+        content="展示 &quot;Gist 同步&quot; 页面"
+        :value="localSettings.isShowSyncTab"
+        @change="(v) => (localSettings.isShowSyncTab = v)"
+      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { useLocalSettings } from '../../../hooks/useLocalSettings.ts';
+import Switcher from './components/Switcher.vue';
 
 const { localSettings } = useLocalSettings();
 </script>
