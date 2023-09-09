@@ -17,21 +17,8 @@
         :options="menuOptions"
       />
 
-      <div class="mt-auto px-[16px] pb-[24px]">
-        <div v-if="!collapsed">
-          <p class="text-text-primary-light dark:text-text-primary-dark">
-            {{ env?.backend }} - {{ env?.version }}
-          </p>
-          <!--          <p -->
-          <!--            class="text-text-4 dark:text-[#fff3]" -->
-          <!--            @click="setCurrentApi('123')" -->
-          <!--          > -->
-          <!--            {{ currentApi?.url }} -->
-          <!--          </p> -->
-        </div>
-        <div v-else>
-          <p>{{ env?.backend }}</p>
-        </div>
+      <div v-if="!collapsed" class="mt-auto p-[16px]">
+        <SideMenuBackendCard />
       </div>
     </div>
   </n-layout-sider>
@@ -39,19 +26,16 @@
 
 <script setup lang="ts">
 import type { MenuOption } from 'naive-ui';
-import { storeToRefs } from 'pinia';
 import { computed, h, ref } from 'vue';
 import { RouterLink } from 'vue-router';
 
+import SideMenuBackendCard from '../../components/pc/SideMenuBackendCard.vue';
 import { useLocalSettings } from '../../hooks/useLocalSettings.ts';
-import { useRequest } from '../../hooks/useRequest.ts';
-import { useResponsiveRequestData } from '../../hooks/useResponsiveRequestData.ts';
-import { useAppStore } from '../../store/useAppStore.ts';
+
+const { localSettings } = useLocalSettings();
 
 const collapsed = ref(false);
 const activeKey = ref('');
-
-const { localSettings } = useLocalSettings();
 
 const menuOptions = computed<MenuOption[]>(() => {
   return [
@@ -86,12 +70,5 @@ const menuOptions = computed<MenuOption[]>(() => {
       icon: () => h('div', { class: 'i-carbon-settings' }),
     },
   ];
-});
-
-const { env } = storeToRefs(useAppStore());
-const { setEnv } = useAppStore();
-const { utilsApi } = useRequest();
-useResponsiveRequestData(() => utilsApi.getEnv(), {
-  onSucceed: d => setEnv(d),
 });
 </script>

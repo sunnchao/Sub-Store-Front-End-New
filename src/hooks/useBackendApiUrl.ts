@@ -5,18 +5,29 @@ import { CONSTANTS } from '../constants';
 import { service } from '../utils/service';
 
 export const useBackendApiUrl = () => {
-  const backendApi = useStorage<Settings.BackendApiUrl>(CONSTANTS.BACKEND_API.LS_KEY, CONSTANTS.BACKEND_API.INITIAL);
+  const backendApi = useStorage<Settings.BackendApiUrl>(
+    CONSTANTS.BACKEND_API.LS_KEY,
+    CONSTANTS.BACKEND_API.INITIAL,
+  );
 
   const getApi = (name: string) => {
     return backendApi.value.apis.find(api => api.name === name);
   };
 
-  const currentApi = computed(() => backendApi.value.apis.find(api => api.name === backendApi.value.current));
+  const currentApi = computed(
+    () =>
+      backendApi.value.apis.find(
+        api => api.name === backendApi.value.current,
+      )!,
+  );
   const backendApis = computed(() => backendApi.value.apis);
 
   const addApi = ({ name, url }: { name: string; url: string }) => {
     if (getApi(name)) return;
-    backendApi.value.apis.push({ name, url });
+    backendApi.value.apis.push({
+      name,
+      url,
+    });
   };
   const removeApi = (name: string) => {
     if (!getApi(name)) return;

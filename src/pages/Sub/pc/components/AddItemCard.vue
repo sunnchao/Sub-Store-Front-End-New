@@ -1,7 +1,7 @@
 <template>
   <n-card
     :bordered="false"
-    class="text-text-tertiary-light dark:text-text-tertiary-dark h-full cursor-pointer border-1 border-[#0006] rounded-[12px] border-dashed opacity-64 dark:border-[#fff6] hover:border-primary-light hover:text-primary-light hover:dark:border-primary-dark hover:dark:text-primary-dark"
+    class="h-full cursor-pointer border-1 border-[#0006] border-dashed text-text-tertiary-light opacity-64 dark:border-[#fff6] hover:border-primary-light dark:text-text-tertiary-dark hover:text-primary-light hover:dark:border-primary-dark hover:dark:text-primary-dark"
   >
     <div
       class="h-full w-full flex flex-col items-center justify-center gap-y-[8px]"

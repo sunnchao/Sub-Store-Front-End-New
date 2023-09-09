@@ -12,24 +12,19 @@ export const useMessage = () => {
   const showMessage = (options: MessageOptions) => {
     if (isPc) {
       const opt: { duration?: number } = {};
-      options.duration && (opt.duration = options.duration);
+      options.duration !== undefined && (opt.duration = options.duration);
 
       switch (options.type) {
         case 'info':
-          window.$pcMessage.info(options.message, opt);
-          break;
+          return window.$pcMessage.info(options.message, opt);
         case 'error':
-          window.$pcMessage.error(options.message, opt);
-          break;
+          return window.$pcMessage.error(options.message, opt);
         case 'warning':
-          window.$pcMessage.warning(options.message, opt);
-          break;
+          return window.$pcMessage.warning(options.message, opt);
         case 'success':
-          window.$pcMessage.success(options.message, opt);
-          break;
+          return window.$pcMessage.success(options.message, opt);
         case 'loading':
-          window.$pcMessage.loading(options.message, opt);
-          break;
+          return window.$pcMessage.loading(options.message, opt);
       }
     } else {
       window.alert(options.message);
