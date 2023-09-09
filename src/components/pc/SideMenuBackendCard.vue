@@ -56,8 +56,10 @@
   >
     <div class="flex flex-col justify-center">
       <div class="flex items-center gap-x-[8px]">
-        <div class="aspect-1 w-[40px]">
-          <img :src="appLogo.shape.value" alt="logo">
+        <div
+          class="aspect-1 w-[40px] flex items-center justify-center opacity-72 filter-brightness-0 dark:filter-brightness-100 dark:filter-saturate-0"
+        >
+          <img :src="env?.logo" alt="logo">
         </div>
         <p
           v-if="env"
@@ -74,7 +76,7 @@
       <n-ellipsis
         class="mt-[8px] text-[12px] text-text-quaternary-light dark:text-text-quaternary-dark"
       >
-        {{ currentApi.url + currentApi.url }}
+        {{ currentApi.url }}
       </n-ellipsis>
 
       <n-divider :style="{ marginTop: '16px', marginBottom: '12px' }" />

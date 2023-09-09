@@ -1,6 +1,6 @@
 declare namespace Store {
   type AppState = {
-    env: Utils.Env | null;
+    env: (Utils.Env & { logo: string }) | null;
   };
 
   type SubscriptionState = {
