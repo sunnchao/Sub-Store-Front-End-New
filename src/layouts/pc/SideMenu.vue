@@ -3,7 +3,7 @@
     bordered
     collapse-mode="width"
     :collapsed-width="64"
-    :width="200"
+    :width="240"
     :collapsed="collapsed"
     @collapse="collapsed = true"
     @expand="collapsed = false"
