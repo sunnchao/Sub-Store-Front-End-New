@@ -10,7 +10,7 @@
   >
     <div class="h-full flex flex-col">
       <n-menu
-        v-model:value="activeKey"
+        :value="activeKey"
         :collapsed="collapsed"
         :collapsed-width="64"
         :collapsed-icon-size="22"
@@ -27,7 +27,7 @@
 <script setup lang="ts">
 import type { MenuOption } from 'naive-ui';
 import { computed, h, ref } from 'vue';
-import { RouterLink } from 'vue-router';
+import { RouterLink, useRoute } from 'vue-router';
 
 import SideMenuBackendCard from '../../components/pc/SideMenuBackendCard.vue';
 import { useLocalSettings } from '../../hooks/useLocalSettings.ts';
@@ -35,7 +35,9 @@ import { useLocalSettings } from '../../hooks/useLocalSettings.ts';
 const { localSettings } = useLocalSettings();
 
 const collapsed = ref(false);
-const activeKey = ref('');
+// const activeKey = ref('');
+const route = useRoute();
+const activeKey = computed(() => route.fullPath.split('/')[1]);
 
 const menuOptions = computed<MenuOption[]>(() => {
   return [
