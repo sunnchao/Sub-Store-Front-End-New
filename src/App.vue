@@ -1,6 +1,6 @@
 <template>
   <template v-if="isPc">
-    <n-config-provider :theme="theme" class="h-full" :class="osThemeRef">
+    <n-config-provider :theme="theme" class="h-full">
       <n-message-provider>
         <NaiveConfig />
       </n-message-provider>
@@ -14,7 +14,8 @@
 </template>
 
 <script setup lang="ts">
-import { darkTheme, useOsTheme } from 'naive-ui';
+import { useColorMode } from '@vueuse/core';
+import { darkTheme } from 'naive-ui';
 import { computed } from 'vue';
 
 import { useScreen } from './hooks/useScreen';
@@ -22,6 +23,6 @@ import NaiveConfig from './layouts/pc/NaiveConfig.vue';
 
 const { isPc } = useScreen();
 
-const osThemeRef = useOsTheme();
-const theme = computed(() => (osThemeRef.value === 'dark' ? darkTheme : null));
+const c = useColorMode();
+const theme = computed(() => (c.value === 'dark' ? darkTheme : null));
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <SubPageItemCard>
+  <n-card embedded hoverable>
     <n-thing>
       <template #avatar>
         <AutoImage :src="props.collection.icon" />
@@ -25,7 +25,7 @@
         <slot name="action" />
       </template>
     </n-thing>
-  </SubPageItemCard>
+  </n-card>
 </template>
 
 <script setup lang="ts">
@@ -33,7 +33,6 @@ import { storeToRefs } from 'pinia';
 
 import AutoImage from '../../../../components/pc/AutoImage.vue';
 import { useSubscriptionStore } from '../../../../store/useSubscriptionStore.ts';
-import SubPageItemCard from './SubPageItemCard.vue';
 
 const props = defineProps<{
   collection: Subscription.Collection

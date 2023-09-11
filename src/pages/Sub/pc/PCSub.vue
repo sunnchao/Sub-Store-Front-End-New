@@ -46,7 +46,7 @@
 import { storeToRefs } from 'pinia';
 
 import { useSubscriptionStore } from '../../../store/useSubscriptionStore.ts';
-import SubPageCardList from './components/SubPageCardList.vue';
+import SubPageCardList from './components/SubCardList.vue';
 
 const props = defineProps<{
   isSubLoading: boolean

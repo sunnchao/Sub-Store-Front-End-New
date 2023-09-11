@@ -1,6 +1,6 @@
 <template>
   <h2
-    class="pc-secondary-title mb-[12px]"
+    class="mb-[12px] pc-secondary-title"
     :style="{ marginTop: props.marginTop ?? '0' }"
   >
     {{ props.title }}
@@ -16,6 +16,7 @@
           </template>
         </SubItem>
       </n-grid-item>
+
       <n-grid-item>
         <AddItemCard item-type="sub" />
       </n-grid-item>
@@ -31,6 +32,7 @@
           </template>
         </CollectionItem>
       </n-grid-item>
+
       <n-grid-item>
         <AddItemCard item-type="collection" />
       </n-grid-item>
@@ -39,6 +41,7 @@
 </template>
 
 <script setup lang="ts">
+import { useClipboard } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
 
 import { useBackendApiUrl } from '../../../../hooks/useBackendApiUrl.ts';
@@ -59,24 +62,38 @@ const { subs, collections } = storeToRefs(subscriptionStore);
 
 const { showMessage } = useMessage();
 const { currentApi } = useBackendApiUrl();
-const copyLink = (name: string, isCollection?: boolean) => {
+const { copy } = useClipboard({ legacy: true });
+const copyLink = async (name: string, isCollection?: boolean) => {
   if (!currentApi.value) {
-    showMessage({
+    return showMessage({
       type: 'error',
       message: '后端 API 地址无效！请检查后端',
     });
-    return;
   }
 
-  console.log(
-    `${currentApi.value.url}/download/${
-      isCollection ? 'collection/' : ''
-    }${name}`,
-  );
-  const { displayName } = subs.value.find(sub => sub.name === name)!;
+  let base = `${currentApi.value.url}/download`;
+  if (isCollection) {
+    base += '/collection';
+  }
+  const copyText = encodeURI(`${base}/${name}`);
+
+  await copy(copyText).catch((e) => {
+    showMessage({
+      type: 'error',
+      message: `复制失败！Error: ${e}`,
+    });
+  });
+
+  let displayName: string | undefined;
+  if (isCollection) {
+    displayName = collections.value.find(c => c.name === name)?.displayName;
+  } else {
+    displayName = subs.value.find(s => s.name === name)?.displayName;
+  }
+
   showMessage({
     type: 'success',
-    message: `复制【${displayName}】通用订阅链接成功！`,
+    message: `复制【${displayName ?? '未知'}】通用订阅链接成功！`,
   });
 };
 </script>

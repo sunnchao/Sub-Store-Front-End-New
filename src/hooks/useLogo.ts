@@ -1,4 +1,4 @@
-import { useOsTheme } from 'naive-ui';
+import { useColorMode } from '@vueuse/core';
 import { computed } from 'vue';
 
 import clashLogo from '../assets/images/logo/clash.png?url';
@@ -18,7 +18,7 @@ import surgeLogo from '../assets/images/logo/surge.png?url';
 import v2rayLogo from '../assets/images/logo/v2ray.png?url';
 
 export const useLogo = () => {
-  const theme = useOsTheme();
+  const theme = useColorMode();
 
   const appLogo = computed(() =>
     theme.value === 'dark' ? darkLogo : lightLogo,

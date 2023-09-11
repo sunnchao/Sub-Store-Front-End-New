@@ -1,5 +1,5 @@
 <template>
-  <SubPageItemCard>
+  <n-card embedded hoverable>
     <n-thing>
       <template #avatar>
         <AutoImage :src="props.sub.icon" />
@@ -82,7 +82,7 @@
         <slot name="action" />
       </template>
     </n-thing>
-  </SubPageItemCard>
+  </n-card>
 </template>
 
 <script setup lang="ts">
@@ -92,7 +92,6 @@ import { computed } from 'vue';
 import AutoImage from '../../../../components/pc/AutoImage.vue';
 import { useSubscriptionStore } from '../../../../store/useSubscriptionStore.ts';
 import { formatFlow } from '../../../../utils/formatFlow.ts';
-import SubPageItemCard from './SubPageItemCard.vue';
 
 const props = defineProps<{
   sub: Subscription.Sub
