@@ -7,16 +7,21 @@
 
       <n-layout-content class="overflow-auto">
         <main class="px-[36px] py-[24px]">
-          <h1
-            class="text-text-primary-light dark:text-text-primary-dark text-[22px] font-bold"
-          >
-            {{ title }}
-          </h1>
+          <div class="flex items-center gap-x-[16px]">
+            <h1
+              class="inline-block text-[22px] font-bold text-text-primary-light dark:text-text-primary-dark"
+            >
+              {{ title }}
+            </h1>
+
+            <SubPageTitleRefreshButton v-if="route.name === 'Sub'" />
+          </div>
+
           <n-divider class="my-[16px]" />
           <router-view v-slot="{ Component }">
-            <transition name="fade" mode="out-in">
-              <component :is="Component" />
-            </transition>
+            <Transition name="fade" mode="out-in">
+              <component :is="Component" :key="route.fullPath" />
+            </Transition>
           </router-view>
         </main>
       </n-layout-content>
@@ -28,6 +33,7 @@
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 
+import SubPageTitleRefreshButton from '../../components/pc/SubPageTitleRefreshButton.vue';
 import HeaderBar from './HeaderBar.vue';
 import SideMenu from './SideMenu.vue';
 
@@ -38,12 +44,16 @@ const title = computed(() => route.meta.title);
 <style scoped>
 .fade-enter-active,
 .fade-leave-active {
-  transition: all 0.1s;
+  transition: all 0.15s;
 }
 
-.fade-enter-from,
-.fade-leave-to {
+.fade-enter-from {
   opacity: 0;
   transform: translateX(10px);
+}
+
+.fade-leave-to {
+  opacity: 0;
+  transform: translateX(-10px);
 }
 </style>
