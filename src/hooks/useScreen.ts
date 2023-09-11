@@ -1,4 +1,5 @@
-import { computed, onBeforeUnmount, ref } from 'vue';
+import { tryOnBeforeUnmount } from '@vueuse/core';
+import { computed, ref } from 'vue';
 
 export const useScreen = () => {
   const width = ref(window.innerWidth);
@@ -9,7 +10,7 @@ export const useScreen = () => {
   };
   window.addEventListener('resize', onResize);
 
-  onBeforeUnmount(() => {
+  tryOnBeforeUnmount(() => {
     window.removeEventListener('resize', onResize);
   });
 

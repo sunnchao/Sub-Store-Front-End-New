@@ -3,7 +3,7 @@
     class="mt-[20px] max-w-[320px] flex items-center justify-between text-text-tertiary-light dark:text-text-tertiary-dark"
   >
     <p>{{ props.content }}</p>
-    <n-switch :value="props.value" @change="_onChange" />
+    <n-switch :value="props.value" @update:value="_onChange" />
   </div>
 </template>
 

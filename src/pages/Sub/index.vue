@@ -8,8 +8,9 @@
 </template>
 
 <script setup lang="ts">
+import { tryOnBeforeUnmount } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
-import { onBeforeUnmount, watch } from 'vue';
+import { watch } from 'vue';
 
 import { useRequest } from '../../hooks/useRequest.ts';
 import { useResponsiveRequestData } from '../../hooks/useResponsiveRequestData.ts';
@@ -37,7 +38,7 @@ const { loading: collectionLoading } = useResponsiveRequestData(
 const stop = watch(subs, () => {
   subscriptionStore.getFlows();
 });
-onBeforeUnmount(() => {
+tryOnBeforeUnmount(() => {
   stop();
 });
 </script>

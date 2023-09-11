@@ -1,5 +1,6 @@
+import { tryOnBeforeUnmount } from '@vueuse/core';
 import type { AxiosError } from 'axios';
-import { onBeforeUnmount, ref, watch } from 'vue';
+import { ref, watch } from 'vue';
 
 import { useBackendApiUrl } from './useBackendApiUrl';
 
@@ -42,7 +43,7 @@ export const useResponsiveRequestData = <T>(
     },
     { immediate: true },
   );
-  onBeforeUnmount(() => {
+  tryOnBeforeUnmount(() => {
     stop();
   });
 
