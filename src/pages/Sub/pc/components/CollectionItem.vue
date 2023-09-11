@@ -1,11 +1,17 @@
 <template>
-  <n-card embedded hoverable>
+  <n-card ref="card" embedded hoverable>
+    <SubItemActions
+      type="collection"
+      :name="props.collection.name"
+      :is-visible="isCardHovered"
+    />
+
     <n-thing>
       <template #avatar>
         <AutoImage :src="props.collection.icon" />
       </template>
       <template #header>
-        {{ props.collection.displayName || props.sub.name }}
+        {{ props.collection.displayName || props.collection.name }}
       </template>
       <div>
         <span
@@ -21,18 +27,18 @@
           </span>
         </span>
       </div>
-      <template #action>
-        <slot name="action" />
-      </template>
     </n-thing>
   </n-card>
 </template>
 
 <script setup lang="ts">
+import { useElementHover } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
+import { ref } from 'vue';
 
 import AutoImage from '../../../../components/pc/AutoImage.vue';
 import { useSubscriptionStore } from '../../../../store/useSubscriptionStore.ts';
+import SubItemActions from './SubItemActions.vue';
 
 const props = defineProps<{
   collection: Subscription.Collection
@@ -43,4 +49,7 @@ const { subs } = storeToRefs(subscriptionStore);
 const getSubName = (collectionName: string) => {
   return subs.value.find(sub => sub.name === collectionName)?.displayName;
 };
+
+const card = ref<HTMLElement | null>(null);
+const isCardHovered = useElementHover(card);
 </script>

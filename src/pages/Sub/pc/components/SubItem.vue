@@ -1,5 +1,11 @@
 <template>
-  <n-card embedded hoverable>
+  <n-card ref="card" embedded hoverable>
+    <SubItemActions
+      :is-visible="isCardHovered"
+      type="sub"
+      :name="props.sub.name"
+    />
+
     <n-thing>
       <template #avatar>
         <AutoImage :src="props.sub.icon" />
@@ -77,21 +83,19 @@
           </div>
         </template>
       </div>
-
-      <template #action>
-        <slot name="action" />
-      </template>
     </n-thing>
   </n-card>
 </template>
 
 <script setup lang="ts">
+import { useElementHover } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 
 import AutoImage from '../../../../components/pc/AutoImage.vue';
 import { useSubscriptionStore } from '../../../../store/useSubscriptionStore.ts';
 import { formatFlow } from '../../../../utils/formatFlow.ts';
+import SubItemActions from './SubItemActions.vue';
 
 const props = defineProps<{
   sub: Subscription.Sub
@@ -134,4 +138,7 @@ const progress = computed(() => {
         : '无到期时间',
   };
 });
+
+const card = ref<HTMLElement | null>(null);
+const isCardHovered = useElementHover(card);
 </script>
