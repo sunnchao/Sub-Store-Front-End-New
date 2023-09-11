@@ -183,19 +183,19 @@ import type { FormInst, FormItemRule } from 'naive-ui';
 import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
 
+import { useApi } from '../../hooks/useApi.ts';
+import { useAppMessage } from '../../hooks/useAppMessage.tsx';
 import { useBackendApiUrl } from '../../hooks/useBackendApiUrl.ts';
-import { useMessage } from '../../hooks/useMessage.tsx';
 import { useRequest } from '../../hooks/useRequest.ts';
-import { useResponsiveRequestData } from '../../hooks/useResponsiveRequestData.ts';
 import { useAppStore } from '../../store/useAppStore.ts';
 
 const { currentApi, backendApis, setCurrentApi, addApi, removeApi }
   = useBackendApiUrl();
 const { env } = storeToRefs(useAppStore());
 const { setEnv } = useAppStore();
-const { utilsApi } = useRequest();
+const { utilsApi } = useApi();
 
-useResponsiveRequestData(() => utilsApi.getEnv(), {
+useRequest(() => utilsApi.getEnv(), {
   onSucceed: d => setEnv(d),
 });
 
@@ -251,10 +251,10 @@ const handleClickManageBackend = () => {
   manageBackendModalIsVisible.value = true;
 };
 
-const { showMessage } = useMessage();
+const { showAppMessage } = useAppMessage();
 const handleSubmitAddBackend = () => {
   formRef.value?.validate().then(async () => {
-    const loading = showMessage({
+    const loading = showAppMessage({
       type: 'loading',
       message: '正在验证后端地址',
       duration: 0,

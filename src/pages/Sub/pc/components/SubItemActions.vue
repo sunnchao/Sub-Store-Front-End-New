@@ -28,9 +28,10 @@
 <script setup lang="ts">
 import { useClipboard } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
+import { useRouter } from 'vue-router';
 
+import { useAppMessage } from '../../../../hooks/useAppMessage.tsx';
 import { useBackendApiUrl } from '../../../../hooks/useBackendApiUrl.ts';
-import { useMessage } from '../../../../hooks/useMessage.tsx';
 import { useSubscriptionStore } from '../../../../store/useSubscriptionStore.ts';
 
 const props = defineProps<{
@@ -40,12 +41,12 @@ const props = defineProps<{
 }>();
 
 const { subs, collections } = storeToRefs(useSubscriptionStore());
-const { showMessage } = useMessage();
+const { showAppMessage } = useAppMessage();
 const { currentApi } = useBackendApiUrl();
 const { copy } = useClipboard({ legacy: true });
 const copyLink = async () => {
   if (!currentApi.value) {
-    return showMessage({
+    return showAppMessage({
       type: 'error',
       message: '后端 API 地址无效！请检查后端',
     });
@@ -57,7 +58,7 @@ const copyLink = async () => {
   const copyText = encodeURI(`${base}/${props.name}`);
 
   await copy(copyText).catch((e) => {
-    showMessage({
+    showAppMessage({
       type: 'error',
       message: `复制失败！Error: ${e}`,
     });
@@ -72,14 +73,16 @@ const copyLink = async () => {
     displayName = subs.value.find(s => s.name === props.name)?.displayName;
   }
 
-  showMessage({
+  showAppMessage({
     type: 'success',
     message: `复制【${displayName ?? '未知'}】通用订阅链接成功！`,
   });
 };
 
+const router = useRouter();
 const editItem = () => {
   console.log('editItem');
+  router.push(`/edit/${props.type}/${props.name}`);
 };
 </script>
 

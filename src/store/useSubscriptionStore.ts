@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 
-import { useRequest } from '../hooks/useRequest.ts';
+import { useApi } from '../hooks/useApi.ts';
 
 const initialState = (): Store.SubscriptionState => ({
   subs: [],
@@ -18,7 +18,7 @@ export const useSubscriptionStore = defineStore('subscription', {
       this.collections = collections;
     },
     getFlows() {
-      const { subApi, parseError } = useRequest();
+      const { subApi, parseError } = useApi();
       const urlList = [
         ...new Set(
           this.subs

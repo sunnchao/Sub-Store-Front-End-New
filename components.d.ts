@@ -43,5 +43,6 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SideMenuBackendCard: typeof import('./src/components/pc/SideMenuBackendCard.vue')['default']
+    SubPageTitleRefreshButton: typeof import('./src/components/pc/SubPageTitleRefreshButton.vue')['default']
   }
 }

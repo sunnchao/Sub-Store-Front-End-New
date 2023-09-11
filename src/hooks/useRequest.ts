@@ -1,47 +1,55 @@
+import { tryOnBeforeUnmount } from '@vueuse/core';
 import type { AxiosError } from 'axios';
+import { ref, watch } from 'vue';
 
-import { getData } from '../utils/service';
-import { useMessage } from './useMessage.tsx';
+import { useBackendApiUrl } from './useBackendApiUrl';
 
-export const useRequest = () => {
-  const { showMessage } = useMessage();
+type Options<T> = {
+  onSucceed?: (data: T) => void
+};
 
-  const parseError = (err: AxiosError<APIRes.Error | string>) => {
-    let content = err.message;
-    const errData = err.response?.data;
-    if (errData) {
-      content = typeof errData === 'string' ? errData : errData.error.message;
+export const useRequest = <T>(
+  reqMethod: () => Promise<T>,
+  options?: Options<T>,
+) => {
+  const { onSucceed } = options || {};
+  const { currentApi } = useBackendApiUrl();
+
+  const data = ref<T>();
+  const error = ref<AxiosError<APIRes.Error | string>>();
+  const loading = ref(false);
+
+  const request = async () => {
+    loading.value = true;
+
+    try {
+      const res = await reqMethod();
+      data.value = res;
+      error.value = undefined;
+      onSucceed && onSucceed(res);
+    } catch (err) {
+      error.value = err as AxiosError<APIRes.Error | string>;
+    } finally {
+      loading.value = false;
     }
-    return { error: err, message: content };
   };
 
-  const onError = (err: AxiosError<APIRes.Error | string>) => {
-    showMessage({
-      type: 'error',
-      message: parseError(err).message,
-    });
-  };
-
-  const subApi = {
-    getSubs: () => getData<Subscription.Subs>('/api/subs', { onError }),
-    getCollections: () =>
-      getData<Subscription.Collections>('/api/collections', { onError }),
-    getFlow: (name: string) =>
-      getData<Subscription.Flow>(`/api/sub/flow/${name}`, { onError }),
-  };
-
-  const settingApi = {
-    getSetting: () => getData<Settings.Response>('/api/settings', { onError }),
-  };
-
-  const utilsApi = {
-    getEnv: () => getData<Utils.Env>('/api/utils/env', { onError }),
-  };
+  const stop = watch(
+    () => currentApi.value.url,
+    (newUrl, oldUrl) => {
+      if (newUrl !== oldUrl && newUrl !== '') {
+        request();
+      }
+    },
+    { immediate: true },
+  );
+  tryOnBeforeUnmount(() => {
+    stop();
+  });
 
   return {
-    subApi,
-    settingApi,
-    utilsApi,
-    parseError,
+    data,
+    error,
+    loading,
   };
 };

@@ -12,8 +12,8 @@ import { tryOnBeforeUnmount } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
 import { watch } from 'vue';
 
+import { useApi } from '../../hooks/useApi.ts';
 import { useRequest } from '../../hooks/useRequest.ts';
-import { useResponsiveRequestData } from '../../hooks/useResponsiveRequestData.ts';
 import { useScreen } from '../../hooks/useScreen';
 import { useSubscriptionStore } from '../../store/useSubscriptionStore.ts';
 import H5Sub from './h5/H5Sub.vue';
@@ -25,12 +25,11 @@ const subscriptionStore = useSubscriptionStore();
 const { setSubs, setCollections } = subscriptionStore;
 const { subs } = storeToRefs(subscriptionStore);
 
-const { subApi } = useRequest();
-const { loading: subLoading } = useResponsiveRequestData(
-  () => subApi.getSubs(),
-  { onSucceed: setSubs },
-);
-const { loading: collectionLoading } = useResponsiveRequestData(
+const { subApi } = useApi();
+const { loading: subLoading } = useRequest(() => subApi.getSubs(), {
+  onSucceed: setSubs,
+});
+const { loading: collectionLoading } = useRequest(
   () => subApi.getCollections(),
   { onSucceed: setCollections },
 );

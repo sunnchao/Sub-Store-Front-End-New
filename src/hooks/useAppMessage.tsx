@@ -6,10 +6,10 @@ type MessageOptions = {
   message: string
   duration?: number
 };
-export const useMessage = () => {
+export const useAppMessage = () => {
   const { isPc } = useScreen();
 
-  const showMessage = (options: MessageOptions) => {
+  const showAppMessage = (options: MessageOptions) => {
     if (isPc) {
       const opt: { duration?: number } = {};
       options.duration !== undefined && (opt.duration = options.duration);
@@ -31,5 +31,5 @@ export const useMessage = () => {
     }
   };
 
-  return { showMessage };
+  return { showAppMessage };
 };
