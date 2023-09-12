@@ -115,12 +115,7 @@
   >
     <div class="flex flex-col justify-center">
       <div class="flex items-center gap-x-[8px]">
-        <div
-          v-if="env"
-          class="aspect-1 w-[40px] flex items-center justify-center opacity-72 filter-brightness-0 dark:filter-brightness-100 dark:filter-saturate-0"
-        >
-          <img :src="env.logo" alt="logo">
-        </div>
+        <AutoImage v-if="env" :src="env.logo" always-black-white />
         <p
           v-if="env"
           class="flex flex-col gap-y-[4px] text-[12px] font-medium leading-[1] text-text-secondary-light dark:text-text-secondary-dark"

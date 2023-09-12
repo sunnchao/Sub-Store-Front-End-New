@@ -30,6 +30,20 @@
       </div>
 
       <div v-else>
+        <n-modal
+          v-model:show="previewIsVisible"
+          preset="card"
+          title="专用订阅"
+          :style="{ width: '700px' }"
+          size="huge"
+          :bordered="false"
+        >
+          <MultiplePlatformPreviewPopup
+            :name="previewSubName"
+            :type="previewSubType"
+          />
+        </n-modal>
+
         <SubPageCardList title="单条订阅" data-type="subs" />
 
         <SubPageCardList
@@ -46,6 +60,7 @@
 import { storeToRefs } from 'pinia';
 
 import { useSubscriptionStore } from '../../../store/useSubscriptionStore.ts';
+import MultiplePlatformPreviewPopup from './components/MultiplePlatformPreviewPopup.vue';
 import SubPageCardList from './components/SubCardList.vue';
 
 const props = defineProps<{
@@ -55,4 +70,21 @@ const props = defineProps<{
 
 const subscriptionStore = useSubscriptionStore();
 const { subs, collections } = storeToRefs(subscriptionStore);
+
+// 多平台预览注入
+const previewSubName = ref('');
+const previewSubType = ref<Components.SubType>('sub');
+const previewIsVisible = ref(false);
+const openMultiplePlatformPreview = ({
+  name,
+  type,
+}: Components.PreviewInfo) => {
+  previewSubName.value = name;
+  previewSubType.value = type;
+  previewIsVisible.value = true;
+};
+provide<Components.PreviewMultiplePlatform>(
+  'previewMultiplePlatform',
+  openMultiplePlatformPreview,
+);
 </script>

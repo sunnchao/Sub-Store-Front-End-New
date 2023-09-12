@@ -14,7 +14,7 @@
       alt="auto image"
       class="h-full w-full object-contain"
       :class="
-        localSettings.isOriginalIcon
+        localSettings.isOriginalIcon && !props.alwaysBlackWhite
           ? ''
           : 'opacity-72 filter-brightness-0 dark:filter-brightness-100 dark:filter-saturate-0'
       "
@@ -31,6 +31,7 @@ const props = defineProps<{
   height?: string
   src?: string
   defaultSrc?: string
+  alwaysBlackWhite?: boolean
 }>();
 
 const { appLogo } = useLogo();

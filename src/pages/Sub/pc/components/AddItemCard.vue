@@ -17,7 +17,7 @@
 import { computed } from 'vue';
 
 const props = defineProps<{
-  itemType: 'sub' | 'collection'
+  itemType: Components.SubType
 }>();
 
 const text = computed(() => {

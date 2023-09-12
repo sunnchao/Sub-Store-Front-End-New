@@ -11,7 +11,7 @@
         :y-gap="8"
       >
         <n-grid-item class="flex justify-center">
-          <n-button strong type="primary" quaternary @click="copyLink">
+          <n-button strong type="primary" quaternary @click="copyLink(props)">
             <template #icon>
               <i class="i-solar-copy-bold-duotone text-[16px] opacity-72" />
             </template>
@@ -20,7 +20,12 @@
         </n-grid-item>
 
         <n-grid-item class="flex justify-center">
-          <n-button strong type="primary" quaternary @click="editItem">
+          <n-button
+            strong
+            type="primary"
+            quaternary
+            @click="openPreview?.(props)"
+          >
             <template #icon>
               <i
                 class="i-solar-link-circle-bold-duotone text-[18px] opacity-72"
@@ -44,63 +49,25 @@
 </template>
 
 <script setup lang="ts">
-import { useClipboard } from '@vueuse/core';
-import { storeToRefs } from 'pinia';
-
-import { useAppMessage } from '../../../../hooks/useAppMessage.tsx';
-import { useBackendApiUrl } from '../../../../hooks/useBackendApiUrl.ts';
-import { useSubscriptionStore } from '../../../../store/useSubscriptionStore.ts';
+import { useCopySubsLink } from '../../../../hooks/useCopySubsLink.ts';
 
 const props = defineProps<{
   isVisible: boolean
-  type: 'sub' | 'collection'
+  type: Components.SubType
   name: string
 }>();
 
-const { subs, collections } = storeToRefs(useSubscriptionStore());
-const { showAppMessage } = useAppMessage();
-const { currentApi } = useBackendApiUrl();
-const { copy } = useClipboard({ legacy: true });
-const copyLink = async () => {
-  if (!currentApi.value) {
-    return showAppMessage({
-      type: 'error',
-      message: '后端 API 地址无效！请检查后端',
-    });
-  }
-
-  const base = `${currentApi.value.url}/download${
-    props.type === 'collection' ? '/collection' : ''
-  }`;
-  const copyText = encodeURI(`${base}/${props.name}`);
-
-  await copy(copyText).catch((e) => {
-    showAppMessage({
-      type: 'error',
-      message: `复制失败！Error: ${e}`,
-    });
-  });
-
-  let displayName: string | undefined;
-  if (props.type === 'collection') {
-    displayName = collections.value.find(
-      c => c.name === props.name,
-    )?.displayName;
-  } else {
-    displayName = subs.value.find(s => s.name === props.name)?.displayName;
-  }
-
-  showAppMessage({
-    type: 'success',
-    message: `复制【${displayName ?? '未知'}】通用订阅链接成功！`,
-  });
-};
+const { copyLink } = useCopySubsLink();
 
 const router = useRouter();
 const editItem = () => {
   console.log('editItem');
   router.push(`/edit/${props.type}/${props.name}`);
 };
+
+const openPreview = inject<Components.PreviewMultiplePlatform>(
+  'previewMultiplePlatform',
+);
 </script>
 
 <style scoped lang="scss">
