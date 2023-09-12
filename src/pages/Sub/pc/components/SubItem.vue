@@ -71,14 +71,14 @@
             v-else-if="flow.status === 'success'"
             class="w-full flex flex-col justify-center gap-y-[4px]"
           >
-            <span class="flex items-center justify-between"><span>{{ progress.usageText }}</span><span>{{ progress.remainingText }}</span></span>
+            <span class="flex items-center justify-between"><span>{{ flowInfo.usageText }}</span><span>{{ flowInfo.remainingText }}</span></span>
             <n-progress
               type="line"
-              :status="progress.progressType"
-              :percentage="progress.percentage"
+              :status="progressInfo.status"
+              :percentage="progressInfo.percentage"
               :show-indicator="false"
             >
-              {{ progress.percentage.toFixed() }}%
+              {{ progressInfo.percentage.toFixed() }}%
             </n-progress>
           </div>
         </template>
@@ -90,7 +90,7 @@
 <script setup lang="ts">
 import { useElementHover } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 
 import AutoImage from '../../../../components/pc/AutoImage.vue';
 import { useSubscriptionStore } from '../../../../store/useSubscriptionStore.ts';
@@ -105,37 +105,54 @@ const subscriptionStore = useSubscriptionStore();
 const { flows } = storeToRefs(subscriptionStore);
 const flow = computed<Subscription.StoreFlow>(() => flows.value[props.sub.url]);
 
-const progress = computed(() => {
-  const obj = {
-    percentage: 0,
-    progressType: 'success',
-    usageText: '',
-    expiresText: '',
-    remainingText: '',
-  };
-  if (flow.value.status !== 'success') return obj;
-
+type ProgressInfo = {
+  status: 'default' | 'success' | 'error' | 'warning' | 'info'
+  percentage: number
+};
+const progressInfo = computed<ProgressInfo>(() => {
+  if (flow.value.status !== 'success') {
+    return {
+      percentage: 0,
+      status: 'success',
+    };
+  }
   const usage = flow.value.data.usage.download + flow.value.data.usage.upload;
   const percentage = (usage / flow.value.data.total) * 100;
-  const progressType
+  const status
     = percentage > 85 ? 'error' : percentage > 50 ? 'warning' : 'success';
-
-  const flowInfo = formatFlow(flow.value.data);
   return {
     percentage,
-    progressType,
-    usageText: `${flowInfo.usage.flow.toFixed(1)} ${flowInfo.usage.unit} / ${
-      flowInfo.total.flow.toFixed(1).endsWith('.0')
-        ? flowInfo.total.flow.toFixed()
-        : flowInfo.total.flow.toFixed(1)
-    } ${flowInfo.total.unit} `,
-    expiresText: flowInfo.expires
-      ? flowInfo.expires.format('YYYY-MM-DD')
-      : '无到期时间',
-    remainingText:
-      flowInfo.remainDays !== null
-        ? `${flowInfo.remainDays}天后过期`
-        : '无到期时间',
+    status,
+  };
+});
+
+type FlowInfo = {
+  usageText: string
+  expiresText: string
+  remainingText: string
+};
+const flowInfo = computed<FlowInfo>(() => {
+  const formattedFlow
+    = flow.value.status !== 'success' ? null : formatFlow(flow.value.data);
+  if (!formattedFlow) {
+    return {
+      usageText: '',
+      expiresText: '',
+      remainingText: '',
+    };
+  }
+
+  const { usage, total, expires, remainDays } = formattedFlow;
+
+  const usageText = `${usage.flow.toFixed(1)} ${usage.unit}`;
+  const totalText = total.flow.toFixed(1).endsWith('.0')
+    ? `${total.flow.toFixed()} ${total.unit}`
+    : `${total.flow.toFixed(1)} ${total.unit}`;
+
+  return {
+    usageText: `${usageText} / ${totalText}`,
+    expiresText: expires ? expires.format('YYYY-MM-DD') : '无到期时间',
+    remainingText: remainDays !== null ? `${remainDays}天后过期` : '无到期时间',
   };
 });
 

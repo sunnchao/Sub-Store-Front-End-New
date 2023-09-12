@@ -30,12 +30,6 @@ const refresh = () => {
         message: '刷新缓存成功！',
       });
     })
-    .catch((e) => {
-      showAppMessage({
-        type: 'error',
-        message: `刷新缓存失败！Error: ${e}`,
-      });
-    })
     .finally(() => {
       loading.value = false;
     });

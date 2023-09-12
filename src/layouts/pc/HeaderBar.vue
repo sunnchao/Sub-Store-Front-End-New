@@ -45,9 +45,13 @@ const props = defineProps<{
 
 const { appLogo } = useLogo();
 
+type ColorOption = {
+  label: string
+  value: typeof colorMode.value
+};
 const c = useColorMode();
 const { store: colorMode } = useColorMode();
-const colorModeOptions = [
+const colorModeOptions: ColorOption[] = [
   {
     label: 'Light',
     value: 'light',
@@ -60,8 +64,8 @@ const colorModeOptions = [
     label: 'Auto',
     value: 'auto',
   },
-] as const;
-const changeColorMode = (value: (typeof colorModeOptions)[number]['value']) => {
+];
+const changeColorMode = (value: ColorOption['value']) => {
   colorMode.value = value;
 };
 </script>

@@ -41,7 +41,7 @@ export const getData = async <T>(
   url: string,
   options?: GetOptions,
 ): Promise<T> => {
-  const { params, onSucceed, onError } = options ?? {};
+  const { params, onError, onSucceed } = options ?? {};
   return new Promise((resolve, reject) => {
     service
       .get<APIRes.Response<T>>(url, { params })

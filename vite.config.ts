@@ -9,10 +9,10 @@ import { defineConfig } from 'vite';
 export default defineConfig({
   plugins: [
     vue(),
-    UnoCSS(),
     AutoImport({
       imports: [
         'vue',
+        'vue-router',
         {
           'naive-ui': [
             'useDialog',
@@ -22,9 +22,14 @@ export default defineConfig({
           ],
         },
       ],
+      dts: 'src/auto-imports.d.ts',
     }),
     Components({
       resolvers: [NaiveUiResolver()],
+      extensions: ['vue', 'md'],
+      include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
+      dts: 'src/components.d.ts',
     }),
+    UnoCSS(),
   ],
 });

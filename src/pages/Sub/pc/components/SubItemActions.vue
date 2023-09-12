@@ -4,23 +4,41 @@
       v-if="props.isVisible"
       class="absolute left-0 top-0 z-100 h-full w-full flex items-center justify-center rounded-[4px] bg-[#fafafccc] px-[16px] backdrop-blur-[4px] dark:bg-[#18181ccc]"
     >
-      <n-space justify="space-between">
-        <n-button strong type="primary" quaternary @click="copyLink">
-          <template #icon>
-            <i class="i-solar-copy-bold-duotone text-[16px] opacity-72" />
-          </template>
-          复制订阅
-        </n-button>
+      <n-grid
+        cols="1 224:2 340:3 456:4 572:5 688:6"
+        responsive="self"
+        :x-gap="8"
+        :y-gap="8"
+      >
+        <n-grid-item class="flex justify-center">
+          <n-button strong type="primary" quaternary @click="copyLink">
+            <template #icon>
+              <i class="i-solar-copy-bold-duotone text-[16px] opacity-72" />
+            </template>
+            通用订阅
+          </n-button>
+        </n-grid-item>
 
-        <n-divider vertical />
+        <n-grid-item class="flex justify-center">
+          <n-button strong type="primary" quaternary @click="editItem">
+            <template #icon>
+              <i
+                class="i-solar-link-circle-bold-duotone text-[18px] opacity-72"
+              />
+            </template>
+            专用订阅
+          </n-button>
+        </n-grid-item>
 
-        <n-button strong type="primary" quaternary @click="editItem">
-          <template #icon>
-            <i class="i-solar-pen-2-bold-duotone text-[16px] opacity-72" />
-          </template>
-          编辑订阅
-        </n-button>
-      </n-space>
+        <n-grid-item class="flex justify-center">
+          <n-button strong type="primary" quaternary @click="editItem">
+            <template #icon>
+              <i class="i-solar-pen-2-bold-duotone text-[18px] opacity-72" />
+            </template>
+            编辑订阅
+          </n-button>
+        </n-grid-item>
+      </n-grid>
     </div>
   </Transition>
 </template>
@@ -28,7 +46,6 @@
 <script setup lang="ts">
 import { useClipboard } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
-import { useRouter } from 'vue-router';
 
 import { useAppMessage } from '../../../../hooks/useAppMessage.tsx';
 import { useBackendApiUrl } from '../../../../hooks/useBackendApiUrl.ts';

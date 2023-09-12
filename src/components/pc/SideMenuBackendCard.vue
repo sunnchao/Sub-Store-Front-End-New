@@ -116,9 +116,10 @@
     <div class="flex flex-col justify-center">
       <div class="flex items-center gap-x-[8px]">
         <div
+          v-if="env"
           class="aspect-1 w-[40px] flex items-center justify-center opacity-72 filter-brightness-0 dark:filter-brightness-100 dark:filter-saturate-0"
         >
-          <img :src="env?.logo" alt="logo">
+          <img :src="env.logo" alt="logo">
         </div>
         <p
           v-if="env"
