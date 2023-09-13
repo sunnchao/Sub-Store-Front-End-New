@@ -1,6 +1,6 @@
 declare namespace Utils {
   type ProxyTools =
-    | "general"
+    | "universal"
     | "clash"
     | "clashMeta"
     | "v2ray"

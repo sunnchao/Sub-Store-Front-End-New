@@ -13,9 +13,9 @@
         <n-grid-item class="flex justify-center">
           <n-button strong type="primary" quaternary @click="copyLink(props)">
             <template #icon>
-              <i class="i-solar-copy-bold-duotone text-[16px] opacity-72" />
+              <i class="i-solar-plain-bold text-[16px] opacity-72" />
             </template>
-            通用订阅
+            通用链接
           </n-button>
         </n-grid-item>
 
@@ -27,18 +27,18 @@
             @click="openPreview?.(props)"
           >
             <template #icon>
-              <i
-                class="i-solar-link-circle-bold-duotone text-[18px] opacity-72"
-              />
+              <i class="i-solar-widget-6-bold-duotone text-[18px] opacity-80" />
             </template>
-            专用订阅
+            专用链接
           </n-button>
         </n-grid-item>
 
         <n-grid-item class="flex justify-center">
           <n-button strong type="primary" quaternary @click="compareItem">
             <template #icon>
-              <i class="i-solar-pen-2-bold-duotone text-[18px] opacity-72" />
+              <i
+                class="i-solar-documents-minimalistic-bold-duotone text-[18px] opacity-80"
+              />
             </template>
             对比结果
           </n-button>
@@ -56,16 +56,18 @@
         <n-grid-item class="flex justify-center">
           <n-button strong type="primary" quaternary @click="duplicateItem">
             <template #icon>
-              <i class="i-solar-pen-2-bold-duotone text-[18px] opacity-72" />
+              <i class="i-solar-copy-bold-duotone text-[18px] opacity-72" />
             </template>
-            复制订阅
+            创建副本
           </n-button>
         </n-grid-item>
 
         <n-grid-item class="flex justify-center">
           <n-button strong type="error" quaternary @click="deleteItem">
             <template #icon>
-              <i class="i-solar-pen-2-bold-duotone text-[18px] opacity-72" />
+              <i
+                class="i-solar-trash-bin-trash-bold-duotone text-[18px] opacity-80"
+              />
             </template>
             删除订阅
           </n-button>

@@ -62,7 +62,7 @@ const items = computed<
   {
     name: '通用订阅',
     icon: appLogo.shape.value,
-    tool: 'general',
+    tool: 'universal',
   },
   {
     name: 'Stash',

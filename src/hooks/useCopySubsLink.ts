@@ -6,7 +6,7 @@ import { useAppMessage } from './useAppMessage.tsx';
 import { useBackendApiUrl } from './useBackendApiUrl.ts';
 
 const queryMap: Record<Utils.ProxyTools, string> = {
-  general: '',
+  universal: '',
   clash: 'Clash',
   clashMeta: 'ClashMeta',
   v2ray: 'V2Ray',
@@ -30,7 +30,7 @@ export const useCopySubsLink = () => {
   };
 
   const getLink = (props: Props) => {
-    const { proxyTool = 'general', type, name } = props;
+    const { proxyTool = 'universal', type, name } = props;
 
     if (!currentApi.value) {
       showAppMessage({
@@ -46,7 +46,7 @@ export const useCopySubsLink = () => {
 
     let link = `${base}/${name}`;
     const query = queryMap[proxyTool];
-    if (proxyTool !== 'general' && query) {
+    if (proxyTool !== 'universal' && query) {
       link += `?target=${query}`;
     }
 
@@ -54,7 +54,7 @@ export const useCopySubsLink = () => {
   };
 
   const copyLink = async (props: Props) => {
-    const { proxyTool = 'general', type, name } = props;
+    const { proxyTool = 'universal', type, name } = props;
 
     const link = getLink(props);
     if (!link) return;
@@ -83,5 +83,8 @@ export const useCopySubsLink = () => {
     });
   };
 
-  return { getLink, copyLink };
+  return {
+    getLink,
+    copyLink,
+  };
 };
