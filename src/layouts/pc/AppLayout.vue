@@ -6,23 +6,28 @@
       <SideMenu />
 
       <n-layout-content class="overflow-auto">
-        <main class="px-[36px] py-[24px]">
-          <div class="flex items-center gap-x-[16px]">
-            <h1
-              class="inline-block text-[22px] font-bold text-text-primary-light dark:text-text-primary-dark"
-            >
-              {{ title }}
-            </h1>
+        <main>
+          <div class="sticky top-0 z-199 bg-[var(--n-color)]">
+            <div class="flex items-center gap-x-[16px] px-[36px] py-[24px]">
+              <h1
+                class="inline-block text-[22px] font-bold text-text-primary-light dark:text-text-primary-dark"
+              >
+                {{ title }}
+              </h1>
 
-            <SubPageTitleRefreshButton v-if="route.name === 'Sub'" />
+              <SubPageTitleRefreshButton v-if="route.name === 'Sub'" />
+            </div>
+
+            <n-divider :style="{ marginTop: 0, marginBottom: 0 }" />
           </div>
 
-          <n-divider class="my-[16px]" />
-          <router-view v-slot="{ Component }">
-            <Transition name="fade" mode="out-in">
-              <component :is="Component" :key="route.fullPath" />
-            </Transition>
-          </router-view>
+          <div class="px-[36px] py-[24px]">
+            <router-view v-slot="{ Component }">
+              <Transition name="fade" mode="out-in">
+                <component :is="Component" :key="route.fullPath" />
+              </Transition>
+            </router-view>
+          </div>
         </main>
       </n-layout-content>
     </n-layout>
