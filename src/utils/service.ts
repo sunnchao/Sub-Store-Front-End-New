@@ -133,6 +133,40 @@ export const putData = async <T>(
   });
 };
 
+type PatchOptions = {
+  data?: Record<string, any>
+} & RequestOptions;
+export const patchData = async <T>(
+  url: string,
+  options?: PatchOptions,
+): Promise<T> => {
+  const { data, onSucceed, onError } = options ?? {};
+  return new Promise((resolve, reject) => {
+    service
+      .patch<APIRes.Response<T>>(url, data, {
+        headers: { 'Content-Type': 'application/json' },
+      })
+      .then((res) => {
+        if (res.status === 200 && res.data.status === 'success') {
+          onSucceed?.();
+          resolve(res.data.data);
+        } else {
+          console.error(
+            'Patch 被 resolve 但响应不为 200 或 status 不为 success：',
+            res,
+          );
+          reject(res);
+        }
+      })
+      .catch((e) => {
+        const err = e as AxiosError<APIRes.Error>;
+        console.error('Sub-Store >>> Patch 请求失败，原始错误：', err);
+        onError?.(err);
+        reject(err);
+      });
+  });
+};
+
 type DeleteOptions = {
   params?: Record<string, string>
 } & RequestOptions;
