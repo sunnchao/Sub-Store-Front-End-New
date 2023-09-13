@@ -1,5 +1,5 @@
 <template>
-  <n-card ref="card" embedded hoverable>
+  <n-card ref="card" embedded hoverable class="min-h-[144px]">
     <SubItemActions
       type="collection"
       :name="props.collection.name"
@@ -14,6 +14,13 @@
         {{ props.collection.displayName || props.collection.name }}
       </template>
       <div>
+        <span
+          v-if="props.collection.subscriptions.length === 0"
+          class="text-text-tertiary-light dark:text-text-tertiary-dark"
+        >
+          无包含的单条订阅
+        </span>
+
         <span
           v-for="name in props.collection.subscriptions"
           :key="name"

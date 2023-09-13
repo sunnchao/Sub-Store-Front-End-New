@@ -3,6 +3,7 @@ import { defineStore } from 'pinia';
 import { useApi } from '../hooks/useApi.ts';
 
 const initialState = (): Store.SubscriptionState => ({
+  isInit: false,
   subs: [],
   collections: [],
   flows: {},
@@ -13,9 +14,11 @@ export const useSubscriptionStore = defineStore('subscription', {
   actions: {
     setSubs(subs: Subscription.Subs) {
       this.subs = subs;
+      this.isInit = true;
     },
     setCollections(collections: Subscription.Collections) {
       this.collections = collections;
+      this.isInit = true;
     },
     getFlows() {
       const { subApi, parseError } = useApi();
