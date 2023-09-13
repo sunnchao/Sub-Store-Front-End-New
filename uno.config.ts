@@ -7,6 +7,14 @@ export default defineConfig({
       'pc-secondary-title':
         'text-[18px] font-bold text-text-secondary-light dark:text-text-secondary-dark',
     },
+    {
+      'pc-compare-icon-true':
+        'block text-[22px] text-primary-light dark:text-primary-dark',
+    },
+    {
+      'pc-compare-icon-false':
+        'block text-[22px] text-text-quaternary-light dark:text-text-quaternary-dark opacity-50',
+    },
   ],
   theme: {
     colors: {

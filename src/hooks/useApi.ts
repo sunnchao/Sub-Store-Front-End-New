@@ -62,12 +62,12 @@ export const useApi = () => {
 
     // 对比
     compareSub: (data: Subscription.Sub) =>
-      postData('/api/preview/sub', {
+      postData<Compare.Data>('/api/preview/sub', {
         onError,
         data,
       }),
     compareCollection: (data: Subscription.Collection) =>
-      postData('/api/preview/collection', {
+      postData<Compare.Data>('/api/preview/collection', {
         onError,
         data,
       }),
