@@ -46,7 +46,7 @@
 
         <template v-else-if="props.sub.source === 'remote'">
           <div
-            v-if="flow.status === 'loading'"
+            v-if="flow?.status === 'loading'"
             class="w-full flex items-center gap-x-[8px]"
           >
             <n-spin size="small" />
@@ -54,7 +54,7 @@
           </div>
 
           <div
-            v-else-if="flow.status === 'error'"
+            v-else-if="flow?.status === 'error'"
             class="w-full flex items-center gap-x-[4px]"
           >
             <i
@@ -68,7 +68,7 @@
           </div>
 
           <div
-            v-else-if="flow.status === 'success'"
+            v-else-if="flow?.status === 'success'"
             class="w-full flex flex-col justify-center gap-y-[4px]"
           >
             <span class="flex items-center justify-between"><span>{{ flowInfo.usageText }}</span><span>{{ flowInfo.remainingText }}</span></span>
@@ -110,7 +110,7 @@ type ProgressInfo = {
   percentage: number
 };
 const progressInfo = computed<ProgressInfo>(() => {
-  if (flow.value.status !== 'success') {
+  if (flow.value?.status !== 'success') {
     return {
       percentage: 0,
       status: 'success',
