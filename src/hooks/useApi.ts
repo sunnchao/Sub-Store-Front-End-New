@@ -1,6 +1,6 @@
 import type { AxiosError } from 'axios';
 
-import { getData } from '../utils/service';
+import { deleteData, getData, postData } from '../utils/service';
 import { useAppMessage } from './useAppMessage.tsx';
 
 export const useApi = () => {
@@ -26,9 +26,27 @@ export const useApi = () => {
   };
 
   const subApi = {
+    // 单条订阅
     getSubs: () => getData<Subscription.Subs>('/api/subs', { onError }),
+    createSub: (data: Subscription.Sub) =>
+      postData('/api/subs', {
+        onError,
+        data,
+      }),
+    deleteSub: (name: string) => deleteData(`/api/sub/${name}`, { onError }),
+
+    // 组合订阅
     getCollections: () =>
       getData<Subscription.Collections>('/api/collections', { onError }),
+    createCollection: (data: Subscription.Collection) =>
+      postData('/api/collections', {
+        onError,
+        data,
+      }),
+    deleteCollection: (name: string) =>
+      deleteData(`/api/collection/${name}`, { onError }),
+
+    // 流量
     getFlow: (name: string) =>
       getData<Subscription.Flow>(`/api/sub/flow/${name}`, { onError }),
   };

@@ -78,11 +78,14 @@
 </template>
 
 <script setup lang="ts">
+import type { MessageReactive } from 'naive-ui';
 import { useDialog } from 'naive-ui';
 import { storeToRefs } from 'pinia';
 import { computed, inject } from 'vue';
 import { useRouter } from 'vue-router';
 
+import { useApi } from '../../../../hooks/useApi.ts';
+import { useAppMessage } from '../../../../hooks/useAppMessage.tsx';
 import { useCopySubsLink } from '../../../../hooks/useCopySubsLink.ts';
 import { useSubscriptionStore } from '../../../../store/useSubscriptionStore.ts';
 
@@ -92,41 +95,100 @@ const props = defineProps<{
   name: string
 }>();
 
-const { subs, collections } = storeToRefs(useSubscriptionStore());
+const store = useSubscriptionStore();
+const { setSubs, setCollections } = store;
+const { subs, collections } = storeToRefs(store);
 const item = computed(() => {
   return props.type === 'sub'
     ? subs.value.find(sub => sub.name === props.name)
     : collections.value.find(collection => collection.name === props.name);
 });
+const displayName = computed(
+  () => item.value?.displayName || item.value?.name || '未知',
+);
 
 const { copyLink } = useCopySubsLink();
+const { subApi } = useApi();
+const { showAppMessage } = useAppMessage();
+
+const refreshData = async (message: MessageReactive) => {
+  message.type = 'loading';
+  message.content = '正在刷新数据...';
+
+  if (props.type === 'sub') {
+    const subs = await subApi.getSubs();
+    setSubs(subs);
+  } else if (props.type === 'collection') {
+    const collections = await subApi.getCollections();
+    setCollections(collections);
+  }
+};
 
 const router = useRouter();
 const editItem = () => {
-  console.log('editItem');
   router.push(`/edit/${props.type}/${props.name}`);
 };
 
 const compareItem = () => {
-  console.log('compareItem');
   router.push(`/compare/${props.type}/${props.name}`);
 };
 
-const duplicateItem = () => {
-  console.log('duplicateItem');
+const duplicateItem = async () => {
+  const dName = displayName.value;
+
+  const msg = showAppMessage({
+    type: 'loading',
+    message: `正在创建订阅【${dName}】的副本...`,
+  })!;
+
+  const randomStr = Math.random().toString(36).substring(2, 6);
+
+  if (props.type === 'sub') {
+    const data = { ...item.value } as Subscription.Sub;
+    data.name = `${data.name}-copy${randomStr}`;
+    await subApi.createSub(data).catch(() => msg.destroy());
+  } else if (props.type === 'collection') {
+    const data = { ...item.value } as Subscription.Collection;
+    data.name = `${data.name}-copy${randomStr}`;
+    await subApi.createCollection(data).catch(() => msg.destroy());
+  }
+
+  await refreshData(msg);
+  msg.content = `创建订阅【${dName}】的副本成功！`;
+  msg.type = 'success';
+  setTimeout(() => {
+    msg.destroy();
+  }, 1500);
 };
 
 const dialog = useDialog();
+
 const deleteItem = () => {
-  dialog.warning({
+  const dName = displayName.value;
+
+  dialog.error({
     title: '删除订阅',
-    content: `确定要删除【${
-      item.value?.displayName || item.value?.name || '未知'
-    }】订阅吗？`,
+    content: `确定要删除订阅【${dName}】吗？`,
     positiveText: '确认删除',
     negativeText: '取消',
-    onPositiveClick: () => {
-      console.log('delete');
+    onPositiveClick: async () => {
+      const msg = showAppMessage({
+        type: 'loading',
+        message: `正在删除订阅【${dName}】...`,
+      })!;
+
+      if (props.type === 'sub') {
+        await subApi.deleteSub(props.name).catch(() => msg.destroy());
+      } else if (props.type === 'collection') {
+        await subApi.deleteCollection(props.name).catch(() => msg.destroy());
+      }
+
+      await refreshData(msg);
+      msg.content = `删除订阅【${dName}】成功！`;
+      msg.type = 'success';
+      setTimeout(() => {
+        msg.destroy();
+      }, 1500);
     },
   });
 };

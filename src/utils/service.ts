@@ -17,7 +17,7 @@ const getBaseUrl = (): string => {
 
 export const service = axios.create({
   baseURL: getBaseUrl(),
-  timeout: 10000,
+  timeout: 30000,
 });
 
 service.interceptors.request.use(
@@ -66,7 +66,7 @@ export const getData = async <T>(
 };
 
 type PostOptions = {
-  data?: Record<string, string>
+  data?: Record<string, any>
 } & RequestOptions;
 export const postData = async <T>(
   url: string,
@@ -79,12 +79,12 @@ export const postData = async <T>(
         headers: { 'Content-Type': 'application/json' },
       })
       .then((res) => {
-        if (res.status === 200 && res.data.status === 'success') {
+        if ([200, 201].includes(res.status) && res.data.status === 'success') {
           onSucceed?.();
           resolve(res.data.data);
         } else {
           console.error(
-            'Post 被 resolve 但响应不为 200 或 status 不为 success：',
+            'Post 被 resolve 但响应不为 200|201 或 status 不为 success：',
             res,
           );
           reject(res);
