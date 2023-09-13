@@ -90,7 +90,7 @@
 <script setup lang="ts">
 import { useElementHover } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 import AutoImage from '../../../../components/pc/AutoImage.vue';
 import { useSubscriptionStore } from '../../../../store/useSubscriptionStore.ts';

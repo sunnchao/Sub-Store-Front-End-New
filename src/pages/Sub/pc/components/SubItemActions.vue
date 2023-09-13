@@ -49,6 +49,9 @@
 </template>
 
 <script setup lang="ts">
+import { inject } from 'vue';
+import { useRouter } from 'vue-router';
+
 import { useCopySubsLink } from '../../../../hooks/useCopySubsLink.ts';
 
 const props = defineProps<{

@@ -58,6 +58,7 @@
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
+import { provide, ref } from 'vue';
 
 import { useSubscriptionStore } from '../../../store/useSubscriptionStore.ts';
 import MultiplePlatformPreviewPopup from './components/MultiplePlatformPreviewPopup.vue';

@@ -43,6 +43,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
+
 import { useCopySubsLink } from '../../../../hooks/useCopySubsLink.ts';
 import { useLogo } from '../../../../hooks/useLogo.ts';
 
