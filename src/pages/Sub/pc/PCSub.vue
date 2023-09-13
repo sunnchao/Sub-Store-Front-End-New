@@ -22,7 +22,7 @@
             <i class="i-solar-confounded-square-bold-duotone block" />
           </template>
           <template #extra>
-            <n-button size="small">
+            <n-button size="small" @click="createSub">
               新增订阅
             </n-button>
           </template>
@@ -59,6 +59,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { provide, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 import { useSubscriptionStore } from '../../../store/useSubscriptionStore.ts';
 import MultiplePlatformPreviewPopup from './components/MultiplePlatformPreviewPopup.vue';
@@ -71,6 +72,11 @@ const props = defineProps<{
 
 const subscriptionStore = useSubscriptionStore();
 const { subs, collections } = storeToRefs(subscriptionStore);
+
+const router = useRouter();
+const createSub = () => {
+  router.push('/create/sub');
+};
 
 // 多平台预览注入
 const previewSubName = ref('');

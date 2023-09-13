@@ -31,7 +31,7 @@ export const router = createRouter({
           },
         },
         {
-          path: '/compare/:name',
+          path: '/compare/:type(sub|collection)/:name',
           name: 'Compare',
           component: () => import('../pages/Compare/index.vue'),
         },

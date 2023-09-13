@@ -2,7 +2,9 @@
   <template v-if="isPc">
     <n-config-provider :theme="theme" class="h-full">
       <n-message-provider>
-        <NaiveConfig />
+        <n-dialog-provider>
+          <NaiveConfig />
+        </n-dialog-provider>
       </n-message-provider>
       <n-global-style />
     </n-config-provider>

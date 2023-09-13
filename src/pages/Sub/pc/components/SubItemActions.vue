@@ -36,11 +36,38 @@
         </n-grid-item>
 
         <n-grid-item class="flex justify-center">
+          <n-button strong type="primary" quaternary @click="compareItem">
+            <template #icon>
+              <i class="i-solar-pen-2-bold-duotone text-[18px] opacity-72" />
+            </template>
+            对比结果
+          </n-button>
+        </n-grid-item>
+
+        <n-grid-item class="flex justify-center">
           <n-button strong type="primary" quaternary @click="editItem">
             <template #icon>
               <i class="i-solar-pen-2-bold-duotone text-[18px] opacity-72" />
             </template>
             编辑订阅
+          </n-button>
+        </n-grid-item>
+
+        <n-grid-item class="flex justify-center">
+          <n-button strong type="primary" quaternary @click="duplicateItem">
+            <template #icon>
+              <i class="i-solar-pen-2-bold-duotone text-[18px] opacity-72" />
+            </template>
+            复制订阅
+          </n-button>
+        </n-grid-item>
+
+        <n-grid-item class="flex justify-center">
+          <n-button strong type="error" quaternary @click="deleteItem">
+            <template #icon>
+              <i class="i-solar-pen-2-bold-duotone text-[18px] opacity-72" />
+            </template>
+            删除订阅
           </n-button>
         </n-grid-item>
       </n-grid>
@@ -49,10 +76,13 @@
 </template>
 
 <script setup lang="ts">
-import { inject } from 'vue';
+import { useDialog } from 'naive-ui';
+import { storeToRefs } from 'pinia';
+import { computed, inject } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { useCopySubsLink } from '../../../../hooks/useCopySubsLink.ts';
+import { useSubscriptionStore } from '../../../../store/useSubscriptionStore.ts';
 
 const props = defineProps<{
   isVisible: boolean
@@ -60,12 +90,43 @@ const props = defineProps<{
   name: string
 }>();
 
+const { subs, collections } = storeToRefs(useSubscriptionStore());
+const item = computed(() => {
+  return props.type === 'sub'
+    ? subs.value.find(sub => sub.name === props.name)
+    : collections.value.find(collection => collection.name === props.name);
+});
+
 const { copyLink } = useCopySubsLink();
 
 const router = useRouter();
 const editItem = () => {
   console.log('editItem');
   router.push(`/edit/${props.type}/${props.name}`);
+};
+
+const compareItem = () => {
+  console.log('compareItem');
+  router.push(`/compare/${props.type}/${props.name}`);
+};
+
+const duplicateItem = () => {
+  console.log('duplicateItem');
+};
+
+const dialog = useDialog();
+const deleteItem = () => {
+  dialog.warning({
+    title: '删除订阅',
+    content: `确定要删除【${
+      item.value?.displayName || item.value?.name || '未知'
+    }】订阅吗？`,
+    positiveText: '确认删除',
+    negativeText: '取消',
+    onPositiveClick: () => {
+      console.log('delete');
+    },
+  });
 };
 
 const openPreview = inject<Components.PreviewMultiplePlatform>(

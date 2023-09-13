@@ -30,28 +30,47 @@
 </template>
 
 <script setup lang="ts">
+import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 
 import SubPageTitleRefreshButton from '../../components/pc/SubPageTitleRefreshButton.vue';
+import { useSubscriptionStore } from '../../store/useSubscriptionStore.ts';
 import HeaderBar from './HeaderBar.vue';
 import SideMenu from './SideMenu.vue';
 
+const { subs, collections } = storeToRefs(useSubscriptionStore());
+const getItem = (type: Components.SubType, name: string) => {
+  return type === 'sub'
+    ? subs.value.find(s => s.name === name)
+    : collections.value.find(c => c.name === name);
+};
+
 const route = useRoute();
 const title = computed(() => {
-  if (route.name === 'Compare') {
-    return `${route.params.name} 处理结果对比`;
-  } else if (route.name === 'CreateSub' || route.name === 'EditSub') {
+  if (
+    route.name === 'Compare'
+    || route.name === 'EditSub'
+    || route.name === 'CreateSub'
+  ) {
     const type = route.params.type === 'sub' ? '单条订阅' : '组合订阅';
+    const item = route.params.name
+      ? getItem(
+        route.params.type as Components.SubType,
+        route.params.name as string,
+      )
+      : null;
+
     switch (route.name) {
+      case 'Compare':
+        return `【${item?.displayName || item?.name || '未知'}】处理结果对比`;
+      case 'EditSub':
+        return `编辑${type}【${item?.displayName || item?.name || '未知'}】`;
       case 'CreateSub':
         return `创建${type}`;
-      case 'EditSub':
-        return `编辑${type} ${route.params.name}`;
-      default:
-        return '';
     }
   }
+
   return route.meta.title;
 });
 </script>

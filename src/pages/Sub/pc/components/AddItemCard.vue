@@ -15,6 +15,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useRouter } from 'vue-router';
 
 const props = defineProps<{
   itemType: Components.SubType
@@ -24,7 +25,9 @@ const text = computed(() => {
   return `创建${props.itemType === 'sub' ? '订阅' : '组合订阅'}`;
 });
 
+const router = useRouter();
 const add = () => {
   console.log('add');
+  router.push(`/create/${props.itemType}`);
 };
 </script>
