@@ -31,6 +31,21 @@ export const router = createRouter({
           },
         },
         {
+          path: '/compare/:name',
+          name: 'Compare',
+          component: () => import('../pages/Compare/index.vue'),
+        },
+        {
+          path: '/create/:type(sub|collection)',
+          name: 'CreateSub',
+          component: () => import('../pages/Editor/Create.vue'),
+        },
+        {
+          path: '/edit/:type(sub|collection)/:name',
+          name: 'EditSub',
+          component: () => import('../pages/Editor/Edit.vue'),
+        },
+        {
           path: '/settings',
           name: 'Settings',
           component: () => import('../pages/Settings/index.vue'),

@@ -38,7 +38,22 @@ import HeaderBar from './HeaderBar.vue';
 import SideMenu from './SideMenu.vue';
 
 const route = useRoute();
-const title = computed(() => route.meta.title);
+const title = computed(() => {
+  if (route.name === 'Compare') {
+    return `${route.params.name} 处理结果对比`;
+  } else if (route.name === 'CreateSub' || route.name === 'EditSub') {
+    const type = route.params.type === 'sub' ? '单条订阅' : '组合订阅';
+    switch (route.name) {
+      case 'CreateSub':
+        return `创建${type}`;
+      case 'EditSub':
+        return `编辑${type} ${route.params.name}`;
+      default:
+        return '';
+    }
+  }
+  return route.meta.title;
+});
 </script>
 
 <style scoped>
