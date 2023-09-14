@@ -53,6 +53,14 @@ export const router = createRouter({
             title: '模块管理',
           },
         },
+        {
+          path: '/create/module',
+          name: 'CreateModule',
+          component: () => import('../pages/Modules/Create/index.vue'),
+          meta: {
+            title: '创建模块',
+          },
+        },
         // {
         //   path: '/module/:name',
         //   name: 'Module',

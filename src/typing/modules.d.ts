@@ -44,11 +44,13 @@ declare namespace Modules {
   };
 
   type PostInfo = {
+    displayName: string;
     url: string;
     content: string;
   } & ScriptInfo;
 
   type BackendModule = {
+    displayName: string;
     name: string;
     url: string;
   } & ScriptInfo;
