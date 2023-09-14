@@ -73,6 +73,23 @@ export const useApi = () => {
       }),
   };
 
+  const moduleApi = {
+    getModules: () =>
+      getData<Modules.BackendModules>('/api/modules', { onError }),
+    createModule: (data: Modules.PostInfo) =>
+      postData('/api/modules', {
+        onError,
+        data,
+      }),
+    updateModule: (name: string, data: Modules.PostInfo) =>
+      patchData(`/api/module/${name}`, {
+        onError,
+        data,
+      }),
+    deleteModule: (name: string) =>
+      deleteData(`/api/module/${name}`, { onError }),
+  };
+
   const settingApi = {
     getSetting: () => getData<Settings.Response>('/api/settings', { onError }),
   };
@@ -84,6 +101,7 @@ export const useApi = () => {
 
   return {
     subApi,
+    moduleApi,
     settingApi,
     utilsApi,
     parseError,
