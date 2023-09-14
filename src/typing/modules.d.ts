@@ -43,8 +43,12 @@ declare namespace Modules {
     pageContent?: string;
   };
 
-  type BackendInfo = {
-    name: string;
+  type PostInfo = {
     url: string;
   } & ScriptInfo;
+
+  type BackendModule = {
+    name: string;
+  } & PostInfo;
+  type BackendModules = BackendModule[];
 }

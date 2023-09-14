@@ -46,6 +46,22 @@ export const router = createRouter({
           component: () => import('../pages/Editor/Edit.vue'),
         },
         {
+          path: '/modules',
+          name: 'Modules',
+          component: () => import('../pages/Modules/index.vue'),
+          meta: {
+            title: '模块管理',
+          },
+        },
+        // {
+        //   path: '/module/:name',
+        //   name: 'Module',
+        //   component: () => import('../pages/Modules/Module/index.vue'),
+        //   meta: {
+        //     title: '模块详情',
+        //   },
+        // },
+        {
           path: '/settings',
           name: 'Settings',
           component: () => import('../pages/Settings/index.vue'),

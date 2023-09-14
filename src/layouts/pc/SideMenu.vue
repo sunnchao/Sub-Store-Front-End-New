@@ -66,6 +66,12 @@ const menuOptions = computed<MenuOption[]>(() => {
         ]
       : []),
     {
+      key: 'modules',
+      label: () =>
+        h(RouterLink, { to: '/modules' }, { default: () => '模块管理' }),
+      icon: () => h('div', { class: 'i-carbon-model-alt' }),
+    },
+    {
       key: 'settings',
       label: () =>
         h(RouterLink, { to: '/settings' }, { default: () => '设置' }),

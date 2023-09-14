@@ -9,4 +9,9 @@ declare namespace Store {
     collections: Subscription.Collections;
     flows: Record<string, Subscription.StoreFlow>;
   };
+
+  type ModuleState = {
+    isInit: boolean;
+    modules: Modules.BackendModules;
+  };
 }
