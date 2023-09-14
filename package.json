@@ -13,6 +13,7 @@
   "dependencies": {
     "@unocss/reset": "^0.55.7",
     "@vueuse/core": "^10.4.1",
+    "acorn": "^8.10.0",
     "axios": "^1.5.0",
     "dayjs": "^1.11.9",
     "pinia": "^2.1.6",
