@@ -30,6 +30,33 @@ export const useLogo = () => {
     theme.value === 'dark' ? darkShapeLogo : lightShapeLogo,
   );
 
+  const getLogoByBackend = (backend: Utils.Backend) => {
+    let logo = '';
+    switch (backend) {
+      case 'Node':
+        logo = nodeLogo;
+        break;
+      case 'Surge':
+        logo = surgeLogo;
+        break;
+      case 'QX':
+        logo = quanxLogo;
+        break;
+      case 'Loon':
+        logo = loonLogo;
+        break;
+      case 'Stash':
+        logo = stashLogo;
+        break;
+      case 'ShadowRocket':
+        logo = shadowrocketLogo;
+        break;
+      default:
+        logo = appShapeLogo.value;
+    }
+    return logo;
+  };
+
   return {
     appLogo: {
       normal: appLogo,
@@ -47,5 +74,6 @@ export const useLogo = () => {
       v2ray: v2rayLogo,
       node: nodeLogo,
     },
+    getLogoByBackend,
   };
 };
