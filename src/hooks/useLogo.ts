@@ -30,7 +30,7 @@ export const useLogo = () => {
     theme.value === 'dark' ? darkShapeLogo : lightShapeLogo,
   );
 
-  const getLogoByBackend = (backend: Utils.Backend) => {
+  const getLogoByBackend = (backend: Utils.Backend, needDefault = true) => {
     let logo = '';
     switch (backend) {
       case 'Node':
@@ -52,7 +52,7 @@ export const useLogo = () => {
         logo = shadowrocketLogo;
         break;
       default:
-        logo = appShapeLogo.value;
+        logo = needDefault ? appShapeLogo.value : '';
     }
     return logo;
   };

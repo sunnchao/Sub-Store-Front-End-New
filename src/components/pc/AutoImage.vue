@@ -10,7 +10,11 @@
     "
   >
     <img
-      :src="props.src || props.defaultSrc || appLogo.shape.value"
+      :src="
+        disableFallback
+          ? props.src
+          : props.src || props.defaultSrc || appLogo.shape.value
+      "
       alt="auto image"
       class="h-full w-full object-contain"
       :class="
@@ -32,6 +36,7 @@ const props = defineProps<{
   src?: string
   defaultSrc?: string
   alwaysBlackWhite?: boolean
+  disableFallback?: boolean
 }>();
 
 const { appLogo } = useLogo();

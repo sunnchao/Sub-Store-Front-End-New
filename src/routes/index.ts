@@ -61,14 +61,22 @@ export const router = createRouter({
             title: '创建模块',
           },
         },
-        // {
-        //   path: '/module/:name',
-        //   name: 'Module',
-        //   component: () => import('../pages/Modules/Module/index.vue'),
-        //   meta: {
-        //     title: '模块详情',
-        //   },
-        // },
+        {
+          path: '/module/:name',
+          name: 'Module',
+          component: () => import('../pages/Modules/Detail/index.vue'),
+          meta: {
+            title: '模块详情',
+          },
+        },
+        {
+          path: '/modulePage/:name',
+          name: 'ModulePage',
+          component: () => import('../pages/Modules/ModulePage/index.vue'),
+          meta: {
+            title: '模块主页',
+          },
+        },
         {
           path: '/settings',
           name: 'Settings',

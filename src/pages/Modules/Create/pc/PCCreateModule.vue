@@ -1,36 +1,58 @@
 <template>
-  <div>PC CreateModule</div>
+  <div>
+    <PCModuleForm
+      :loading="false"
+      :default-value="form"
+      @change-parsed="(v) => (isParsed = v)"
+      @submit="submitForm"
+    />
+
+    <n-divider />
+
+    <PCModuleDetail :info="parsedData" @submit="addModule" />
+  </div>
 </template>
 
 <script setup lang="ts">
-import { CONSTANTS } from '../../../../constants';
-import { moduleParser } from '../../../../utils/moduleParser.ts';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
+import PCModuleDetail from '../../../../components/pc/Modules/PCModuleDetail.vue';
+import { useApi } from '../../../../hooks/useApi.ts';
+import { useAppMessage } from '../../../../hooks/useAppMessage.tsx';
+
+const { showAppMessage } = useAppMessage();
+const { moduleApi } = useApi();
+
+const form = ref<Modules.Form>({
+  moduleType: 'remote',
+  displayName: '',
+  url: '',
+  localContent: '',
+  remoteContent: '',
+});
+const isParsed = ref(false);
+const parsedData = ref<Modules.PostInfo | undefined>(undefined);
+const submitForm = (data: Modules.PostInfo) => {
+  parsedData.value = data;
+  isParsed.value = true;
+};
+
+const router = useRouter();
 const addModule = async () => {
-  const text = CONSTANTS.testText;
-  const json = moduleParser(text);
+  if (!parsedData.value) return;
+  // const text = CONSTANTS.testText;
+  // const json = moduleParser(text);
   const loading = showAppMessage({
     type: 'loading',
     message: '正在添加模块...',
   })!;
 
-  await moduleApi
-    .createModule({
-      ...json,
-      content: text,
-      url: 'test',
-    })
-    .catch(() => loading.destroy());
+  await moduleApi.createModule(parsedData.value).catch(() => loading.destroy());
 
-  loading.content = '创建模块成功，正在更新数据...';
-
-  const modules = await moduleApi.getModules();
-  setModules(modules);
-
+  router.push('/modules');
   loading.type = 'success';
-  loading.content = '添加模块成功！';
+  loading.content = '创建模块成功！';
   setTimeout(() => loading.destroy(), 1500);
 };
 </script>
-
-<style scoped></style>

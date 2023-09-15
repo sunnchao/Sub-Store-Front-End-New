@@ -46,9 +46,13 @@ export const getData = async <T>(
     service
       .get<APIRes.Response<T>>(url, { params })
       .then((res) => {
-        if (res.status === 200 && res.data.status === 'success') {
+        if (res.status === 200) {
           onSucceed?.();
-          resolve(res.data.data);
+          if (res.data.status === 'success') {
+            resolve(res.data.data);
+          } else {
+            resolve(res.data);
+          }
         } else {
           console.error(
             'Get 被 resolve 但响应不为 200 或 status 不为 success：',

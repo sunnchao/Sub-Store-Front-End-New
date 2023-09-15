@@ -88,6 +88,8 @@ export const useApi = () => {
       }),
     deleteModule: (name: string) =>
       deleteData(`/api/module/${name}`, { onError }),
+    getModuleContent: (name: string) =>
+      getData<string>(`/api/module/${name}`, { onError }),
   };
 
   const settingApi = {
