@@ -58,7 +58,7 @@ export const useApi = () => {
 
     // 流量
     getFlow: (name: string) =>
-      getData<Subscription.Flow>(`/api/sub/flow/${name}`, { onError }),
+      getData<Subscription.Flow>(`/api/sub/flow/${name}`),
 
     // 对比
     compareSub: (data: Subscription.Sub) =>
