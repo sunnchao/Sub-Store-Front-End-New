@@ -43,7 +43,9 @@ export const moduleParser = (content: string): Output => {
               .join('\n');
             result = {
               ...result,
-              pageContent: `${result.pageContent}\n${pageContent}`,
+              pageContent: result.pageContent
+                ? `${result.pageContent}\n${pageContent}`
+                : pageContent,
             };
           }
         }
@@ -59,7 +61,10 @@ export const moduleParser = (content: string): Output => {
       return false;
     });
     if (!schema) {
-      return { ok: false, result: '脚本顶级作用域中未解析到 SUB_STORE_SCHEMA' };
+      return {
+        ok: false,
+        result: '脚本顶级作用域中未解析到 SUB_STORE_SCHEMA',
+      };
     }
 
     const start = schema?.declarations[0].init.start;
@@ -69,11 +74,17 @@ export const moduleParser = (content: string): Output => {
     // eslint-disable-next-line no-eval
     eval(`result = {...result, ...${code}}`);
 
-    return { ok: true, result };
+    return {
+      ok: true,
+      result,
+    };
   } catch (e) {
     const err = e as {
       message: string
     };
-    return { ok: false, result: err.message };
+    return {
+      ok: false,
+      result: err.message,
+    };
   }
 };

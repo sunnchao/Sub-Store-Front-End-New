@@ -16,7 +16,7 @@
     "simple-import-sort/exports": "error",
     "antfu/top-level-function": "off",
     "antfu/if-newline": "off",
-    "vue/component-tags-order": [
+    "vue/block-order": [
       "error",
       {
         "order": [

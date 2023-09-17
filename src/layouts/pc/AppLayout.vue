@@ -40,15 +40,21 @@ import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 
 import SubPageTitleRefreshButton from '../../components/pc/SubPageTitleRefreshButton.vue';
+import { useModuleStore } from '../../store/useModuleStore.ts';
 import { useSubscriptionStore } from '../../store/useSubscriptionStore.ts';
 import HeaderBar from './HeaderBar.vue';
 import SideMenu from './SideMenu.vue';
 
+const { modules } = storeToRefs(useModuleStore());
 const { subs, collections } = storeToRefs(useSubscriptionStore());
 const getItem = (type: Components.SubType, name: string) => {
   return type === 'sub'
     ? subs.value.find(s => s.name === name)
     : collections.value.find(c => c.name === name);
+};
+
+const getModule = (name: string) => {
+  return modules.value.find(c => c.name === name);
 };
 
 const route = useRoute();
@@ -74,6 +80,11 @@ const title = computed(() => {
       case 'CreateSub':
         return `创建${type}`;
     }
+  }
+
+  if (route.name === 'ModulePage') {
+    const module = getModule(route.params.name as string);
+    return module ? `模块【${module.displayName}】主页` : '模块主页';
   }
 
   return route.meta.title;

@@ -73,9 +73,6 @@ export const router = createRouter({
           path: '/modulePage/:name',
           name: 'ModulePage',
           component: () => import('../pages/Modules/ModulePage/index.vue'),
-          meta: {
-            title: '模块主页',
-          },
         },
         {
           path: '/settings',
