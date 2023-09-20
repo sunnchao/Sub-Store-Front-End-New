@@ -4,7 +4,7 @@ declare namespace Subscription {
     displayName: string;
     icon: string;
     name: string;
-    source: "remote" | "local";
+    source: 'remote' | 'local';
     ua: string;
     url: string;
     process: Processors;
@@ -30,16 +30,16 @@ declare namespace Subscription {
   };
   type StoreFlow =
     | {
-        status: "loading";
-      }
+      status: 'loading';
+    }
     | {
-        status: "success";
-        data: Flow;
-      }
+      status: 'success';
+      data: Flow;
+    }
     | {
-        status: "error";
-        error: string;
-      };
+      status: 'error';
+      error: string;
+    };
 
   type Processor = unknown;
   type Processors = Processor[];

@@ -1,13 +1,11 @@
 <template>
   <div
     class="aspect-1"
-    :class="
-      props.width
-        ? `w-[${props.width}]`
-        : props.height
-          ? `h-[${props.height}]`
-          : 'w-[36px]'
-    "
+    :style="{
+      ...(props.width && { width: props.width }),
+      ...(props.height && { height: props.height }),
+      ...(!props.width && !props.height && { width: '36px' }),
+    }"
   >
     <img
       :src="
@@ -31,12 +29,12 @@ import { useLocalSettings } from '../../hooks/useLocalSettings.ts';
 import { useLogo } from '../../hooks/useLogo.ts';
 
 const props = defineProps<{
-  width?: string
-  height?: string
-  src?: string
-  defaultSrc?: string
-  alwaysBlackWhite?: boolean
-  disableFallback?: boolean
+  width?: string;
+  height?: string;
+  src?: string;
+  defaultSrc?: string;
+  alwaysBlackWhite?: boolean;
+  disableFallback?: boolean;
 }>();
 
 const { appLogo } = useLogo();
