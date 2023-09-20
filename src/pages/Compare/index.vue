@@ -29,7 +29,7 @@ const { subApi } = useApi();
 const { isInit, subs, collections } = storeToRefs(store);
 
 const loading = ref(false);
-const error = ref<string | undefined>(undefined);
+const error = ref('');
 const compareData = ref<Compare.Data | undefined>(undefined);
 
 onMounted(async () => {
@@ -49,9 +49,11 @@ onMounted(async () => {
       subApi
         .compareSub(sub)
         .then(data => (compareData.value = data))
-        .catch(() => (error.value = '获取对比数据失败'));
+        .catch(() => (error.value = '获取对比数据失败'))
+        .finally(() => (loading.value = false));
     } else {
       error.value = '该订阅不存在，请刷新订阅页面重新进入';
+      loading.value = false;
     }
   } else if (type === 'collection') {
     const collection = collections.value.find(c => c.name === name);
@@ -60,12 +62,12 @@ onMounted(async () => {
       subApi
         .compareCollection(collection)
         .then(data => (compareData.value = data))
-        .catch(() => (error.value = '获取对比数据失败'));
+        .catch(() => (error.value = '获取对比数据失败'))
+        .finally(() => (loading.value = false));
     } else {
       error.value = '该订阅不存在，请刷新订阅页面重新进入';
+      loading.value = false;
     }
   }
-
-  loading.value = false;
 });
 </script>
