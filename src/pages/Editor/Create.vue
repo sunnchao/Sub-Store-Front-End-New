@@ -1,11 +1,13 @@
 <template>
-  <PCEditor v-if="isPc" :type="type" />
+  <PCEditor v-if="isPc" :type="type" @submit="onSubmit" />
   <H5Editor v-else />
 </template>
 
 <script setup lang="ts">
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
+import { useApi } from '../../hooks/useApi.ts';
+import { useAppMessage } from '../../hooks/useAppMessage.tsx';
 import { useScreen } from '../../hooks/useScreen.ts';
 import H5Editor from './h5/H5Editor.vue';
 import PCEditor from './pc/PCEditor.vue';
@@ -14,4 +16,27 @@ const { isPc } = useScreen();
 
 const route = useRoute();
 const type = route.params.type as Components.SubType;
+
+const router = useRouter();
+const { showAppMessage } = useAppMessage();
+const { subApi } = useApi();
+const onSubmit = async (data: Subscription.Sub | Subscription.Collection) => {
+  const loading = showAppMessage({
+    type: 'loading',
+    message: `正在创建订阅【${data.displayName}】...`,
+  })!;
+  if (type === 'collection') {
+    const collection = data as Subscription.Collection;
+    await subApi.createCollection(collection).catch(() => loading.destroy());
+  } else if (type === 'sub') {
+    const sub = data as Subscription.Sub;
+    await subApi.createSub(sub).catch(() => loading.destroy());
+  }
+
+  router.push('/sub');
+
+  loading.type = 'success';
+  loading.content = `创建订阅【${data.displayName}】成功！`;
+  setTimeout(() => loading.destroy(), 1500);
+};
 </script>

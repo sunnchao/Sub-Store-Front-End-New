@@ -2,7 +2,13 @@
   <div>
     <LoadingAndError :loading="loading" :error="error" />
 
-    <n-form v-if="form" ref="formRef" :model="form" :rules="rules">
+    <AddProcessorModal
+      :is-visible="addProcessorModalIsVisible"
+      :modules="modules"
+      @add="addProcessor"
+    />
+
+    <n-form v-if="form" ref="formRef" :model="form" :rules="rules as any">
       <n-grid :cols="24" :x-gap="24">
         <n-form-item-gi :span="12" label="标识名称" path="name">
           <n-input v-model:value="form.name" placeholder="请输入唯一标识名称" />
@@ -86,11 +92,30 @@
         </n-form-item>
       </template>
 
-      <n-form-item>
-        <n-button attr-type="submit" @click="submitForm">
+      <n-divider />
+
+      <h2 class="flex items-center gap-x-[16px] pc-secondary-title">
+        <span>订阅处理</span>
+        <n-button size="small" @click="addProcessorModalIsVisible = true">
+          <template #icon>
+            <i class="i-carbon-add block" />
+          </template>
+          添加处理器
+        </n-button>
+      </h2>
+
+      <n-divider />
+
+      <div class="flex justify-end">
+        <n-button
+          attr-type="submit"
+          size="large"
+          type="primary"
+          @click="submitForm"
+        >
           提交
         </n-button>
-      </n-form-item>
+      </div>
     </n-form>
   </div>
 </template>
@@ -105,12 +130,19 @@ import AutoImage from '../../../components/pc/AutoImage.vue';
 import { useApi } from '../../../hooks/useApi.ts';
 import { useModuleStore } from '../../../store/useModuleStore.ts';
 import { useSubscriptionStore } from '../../../store/useSubscriptionStore.ts';
+import AddProcessorModal from './components/AddProcessorModal.vue';
 
 const props = defineProps<{
   name?: string;
   type: Components.SubType;
 }>();
 
+const emits = defineEmits<{
+  (
+    e: 'submit',
+    data: Subscription.Sub | Subscription.Collection,
+  ): Promise<void>;
+}>();
 const subStore = useSubscriptionStore();
 const moduleStore = useModuleStore();
 const { subs, collections, isInit: subsIsInit } = storeToRefs(subStore);
@@ -120,6 +152,15 @@ const loading = ref(false);
 const error = ref('');
 const form = ref<Subscription.Sub | Subscription.Collection | null>(null);
 const formRef = ref<FormInst | null>(null);
+
+// 添加处理器
+const addProcessorModalIsVisible = ref(false);
+const addProcessor = (name: string) => {
+  console.log('add Processor ', name);
+  addProcessorModalIsVisible.value = false;
+};
+
+// TODO: 修改处理器数据
 
 // 组合订阅的单条订阅选项渲染函数
 const renderSubscriptionsLabel = (option: SelectOption): VNodeChild =>
@@ -141,7 +182,7 @@ const rules = {
           return new Error('请输入唯一标识名称');
         } else if (!/^[a-zA-Z0-9_-]+$/.test(value)) {
           return new Error('唯一标识名称只能包含字母、数字、下划线和中划线');
-        } else if (list.some(sub => sub.name === value)) {
+        } else if (!props.name && list.some(sub => sub.name === value)) {
           return new Error('唯一标识名称已存在，请更换');
         }
         return true;
@@ -193,8 +234,9 @@ const rules = {
   subscriptions: [
     {
       required: true,
+      type: 'array',
       message: '请选择包含的单条订阅',
-      trigger: ['input', 'blur'],
+      trigger: ['change', 'blur'],
     },
   ],
 };
@@ -203,10 +245,10 @@ const submitForm = (e: MouseEvent) => {
   e.preventDefault();
   formRef.value?.validate((errors) => {
     if (!errors) {
-      console.log(form.value);
+      // console.log(form.value);
+      emits('submit', form.value!);
     } else {
       console.log(errors);
-      console.log(form.value);
     }
   });
 };
@@ -233,7 +275,7 @@ onMounted(async () => {
     if (props.type === 'sub') {
       const sub = subs.value.find(sub => sub.name === props.name);
       if (sub) {
-        form.value = sub;
+        form.value = { ...sub };
       } else {
         error.value = '未找到该订阅';
       }
@@ -242,7 +284,7 @@ onMounted(async () => {
         collection => collection.name === props.name,
       );
       if (collection) {
-        form.value = collection;
+        form.value = { ...collection };
       } else {
         error.value = '未找到该集合';
       }
