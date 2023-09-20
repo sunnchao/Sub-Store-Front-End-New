@@ -55,6 +55,31 @@
           </span>
         </template>
       </n-descriptions-item>
+
+      <n-descriptions-item
+        v-if="props.info?.params && Object.keys(props.info.params).length > 0"
+        label="模块参数"
+        :span="4"
+      >
+        <n-table :bordered="false" :bottom-bordered="false" size="large">
+          <!--          <thead> -->
+          <!--            <tr> -->
+          <!--              <th>参数名</th> -->
+          <!--              <th>参数描述</th> -->
+          <!--              <th>参数类型</th> -->
+          <!--              <th>默认值</th> -->
+          <!--            </tr> -->
+          <!--          </thead> -->
+          <tbody>
+            <tr v-for="(param, key) in props.info.params" :key="key">
+              <td>{{ key }}</td>
+              <td>{{ param.description ?? "-" }}</td>
+              <td>{{ param.dataType ?? "-" }}</td>
+              <td>{{ param.defaultValue ?? "-" }}</td>
+            </tr>
+          </tbody>
+        </n-table>
+      </n-descriptions-item>
     </n-descriptions>
 
     <div class="mt-[16px] w-full flex justify-end">

@@ -37,17 +37,52 @@
         </n-descriptions-item>
       </n-descriptions>
 
-      <h2 class="mb-[12px] mt-[36px] pc-secondary-title">
+      <n-divider />
+
+      <h2 class="mb-[12px] pc-secondary-title">
         模块介绍
       </h2>
-
-      <p
-        v-for="text in props.data.pageContent?.split('\n')"
-        :key="text"
-        class="leading-loose"
-      >
-        {{ text }}
+      <template v-if="props.data.pageContent">
+        <p
+          v-for="text in props.data.pageContent.split('\n')"
+          :key="text"
+          class="leading-loose"
+        >
+          {{ text }}
+        </p>
+      </template>
+      <p v-else>
+        暂无介绍
       </p>
+
+      <template
+        v-if="props.data?.params && Object.keys(props.data.params).length > 0"
+      >
+        <n-divider />
+
+        <h2 class="mb-[12px] pc-secondary-title">
+          模块参数
+        </h2>
+
+        <n-table striped>
+          <thead>
+            <tr>
+              <th>参数名</th>
+              <th>参数描述</th>
+              <th>参数类型</th>
+              <th>默认值</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(param, key) in props.data.params" :key="key">
+              <td>{{ key }}</td>
+              <td>{{ param.description ?? "-" }}</td>
+              <td>{{ param.dataType ?? "-" }}</td>
+              <td>{{ param.defaultValue ?? "-" }}</td>
+            </tr>
+          </tbody>
+        </n-table>
+      </template>
     </template>
   </div>
 </template>
