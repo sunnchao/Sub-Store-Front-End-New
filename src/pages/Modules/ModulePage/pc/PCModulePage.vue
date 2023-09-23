@@ -75,7 +75,7 @@
           </thead>
           <tbody>
             <tr v-for="(param, key) in props.data.params" :key="key">
-              <td>{{ key }}</td>
+              <td>{{ param.name || key }}</td>
               <td>{{ param.description ?? "-" }}</td>
               <td>{{ param.dataType ?? "-" }}</td>
               <td>{{ param.defaultValue ?? "-" }}</td>
@@ -94,9 +94,9 @@ import LoadingAndError from '../../../../components/pc/LoadingAndError.vue';
 import { useLogo } from '../../../../hooks/useLogo.ts';
 
 const props = defineProps<{
-  loading: boolean
-  data?: Modules.BackendModule
-  error: string
+  loading: boolean;
+  data?: Modules.BackendModule;
+  error: string;
 }>();
 
 const { getLogoByBackend } = useLogo();

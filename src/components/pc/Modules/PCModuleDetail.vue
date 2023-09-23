@@ -72,7 +72,7 @@
           <!--          </thead> -->
           <tbody>
             <tr v-for="(param, key) in props.info.params" :key="key">
-              <td>{{ key }}</td>
+              <td>{{ param.name || key }}</td>
               <td>{{ param.description ?? "-" }}</td>
               <td>{{ param.dataType ?? "-" }}</td>
               <td>{{ param.defaultValue ?? "-" }}</td>
@@ -103,11 +103,11 @@ import { useLogo } from '../../../hooks/useLogo.ts';
 import { useAppStore } from '../../../store/useAppStore.ts';
 
 const props = defineProps<{
-  info?: Modules.PostInfo
-  isEdit?: boolean
+  info?: Modules.PostInfo;
+  isEdit?: boolean;
 }>();
 const emits = defineEmits<{
-  (event: 'submit'): void
+  (event: 'submit'): void;
 }>();
 
 const { getLogoByBackend } = useLogo();
