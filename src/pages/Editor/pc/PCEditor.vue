@@ -25,7 +25,7 @@
         <n-form-item-gi :span="18" label="订阅图标" path="icon">
           <n-input
             v-model:value="form.icon"
-            placeholder="请输入订阅图标地址，推荐 png/webp 等包含 alpha 通道的格式"
+            placeholder="请输入订阅图标地址或 base64 字符串，推荐 png/webp 等包含 alpha 通道的格式"
           />
         </n-form-item-gi>
         <n-grid-item :span="6" class="flex items-center gap-x-[8px]">
@@ -202,8 +202,11 @@ const rules = {
       validator: (_: any, value: string) => {
         if (!value) {
           return true;
-        } else if (!/^https?:\/\/.+$/.test(value)) {
-          return new Error('图标地址应以 http(s)?:// 开头');
+        } else if (
+          !/^https?:\/\/.+$/.test(value) &&
+          !/^data:image.+$/.test(value)
+        ) {
+          return new Error('图标地址应以 http(s)?:// 或 data:image 开头');
         }
         return true;
       },
