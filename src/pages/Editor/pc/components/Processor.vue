@@ -21,7 +21,24 @@
           </div>
 
           <!-- 模块操作 -->
-          <div>close</div>
+          <div>
+            <n-popconfirm
+              positive-text="确认删除"
+              negative-text="取消"
+              :positive-button-props="{ type: 'error' }"
+              @positive-click="deleteProcessor(processor.id)"
+            >
+              <template #trigger>
+                <n-button type="error" quaternary size="small">
+                  <template #icon>
+                    <i class="i-solar-trash-bin-trash-bold-duotone" />
+                  </template>
+                  删除
+                </n-button>
+              </template>
+              确定删除该处理器么？已修改的参数值将被丢弃
+            </n-popconfirm>
+          </div>
         </div>
 
         <p class="my-[16px]">
@@ -175,6 +192,14 @@ const updateValue = (id: number, key: string, value: any) => {
   obj[key] = value;
   processor.args.content = encodeURI(`${path}#${JSON.stringify(obj)}`);
 
+  emits('change', processCopy);
+};
+
+const deleteProcessor = (id: number) => {
+  const processCopy = [...props.value];
+  const index = processCopy.findIndex(p => p.id === id);
+  if (index === -1) return;
+  processCopy.splice(index, 1);
   emits('change', processCopy);
 };
 </script>
