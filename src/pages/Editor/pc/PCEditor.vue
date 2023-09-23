@@ -129,6 +129,7 @@ import { useDialog } from 'naive-ui';
 import { storeToRefs } from 'pinia';
 import type { VNodeChild } from 'vue';
 import { h, onMounted, ref } from 'vue';
+import { onBeforeRouteLeave } from 'vue-router';
 
 import AutoImage from '../../../components/pc/AutoImage.vue';
 import { useApi } from '../../../hooks/useApi.ts';
@@ -159,6 +160,9 @@ const loading = ref(false);
 const error = ref('');
 const form = ref<Subscription.Sub | Subscription.Collection | null>(null);
 const formRef = ref<FormInst | null>(null);
+
+// 用来保留旧数据，在路由切换时候校验提示保存数据
+let initForm = '';
 
 const randomId = (): number => {
   const id = Math.floor(Math.random() * 1000000);
@@ -291,6 +295,8 @@ const submitForm = (e: MouseEvent) => {
   e.preventDefault();
   formRef.value?.validate((errors) => {
     if (!errors) {
+      // 防止弹窗，将对比值设置为当前值
+      initForm = JSON.stringify({ ...form.value });
       emits('submit', form.value!);
     } else {
       console.log(errors);
@@ -300,6 +306,7 @@ const submitForm = (e: MouseEvent) => {
 
 const dialog = useDialog();
 const { subApi, moduleApi } = useApi();
+
 onMounted(async () => {
   loading.value = true;
 
@@ -387,5 +394,24 @@ onMounted(async () => {
   }
 
   loading.value = false;
+  initForm = JSON.stringify({ ...form.value });
+});
+
+onBeforeRouteLeave((to, from, next) => {
+  if (JSON.stringify(form.value) !== initForm) {
+    dialog.warning({
+      title: '警告',
+      content: '当前订阅已修改尚未保存，离开将丢失修改。是否确认离开？',
+      positiveText: '离开',
+      negativeText: '取消',
+      closable: false,
+      closeOnEsc: false,
+      maskClosable: false,
+      autoFocus: false,
+      onPositiveClick: () => next(),
+    });
+  } else {
+    next();
+  }
 });
 </script>
