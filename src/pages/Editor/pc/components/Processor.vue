@@ -1,6 +1,10 @@
 <template>
   <n-list>
-    <n-list-item v-for="processor in filterProcess" :key="processor.id">
+    <n-list-item
+      v-for="processor in filterProcess"
+      :key="processor.id"
+      :style="{ alignItems: 'flex-start' }"
+    >
       <n-thing
         v-if="typeof processor.module === 'string'"
         :title="processor.module"
@@ -22,7 +26,7 @@
               :key="key"
             >
               <p class="mb-[4px] flex items-center font-medium">
-                {{ key }}
+                {{ param.name || key }}
                 <n-popover trigger="hover">
                   <template #trigger>
                     <i

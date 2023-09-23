@@ -5,6 +5,7 @@ declare namespace Modules {
   };
 
   type Param = {
+    name: string;
     description: string;
   } & (
     | {
