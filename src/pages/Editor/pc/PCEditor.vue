@@ -6,6 +6,7 @@
       :is-visible="addProcessorModalIsVisible"
       :modules="modules"
       @add="addProcessor"
+      @close="addProcessorModalIsVisible = false"
     />
 
     <n-form v-if="form" ref="formRef" :model="form" :rules="rules as any">
@@ -168,7 +169,6 @@ const { showAppMessage } = useAppMessage();
 // 添加处理器
 const addProcessorModalIsVisible = ref(false);
 const addProcessor = (name: string) => {
-  console.log('add Processor ', name);
   addProcessorModalIsVisible.value = false;
   if (!form.value) return;
   const module = modules.value.find(m => m.name === name);
@@ -199,7 +199,7 @@ const addProcessor = (name: string) => {
   });
 };
 
-// TODO: 修改处理器数据
+// 修改处理器数据
 const onProcessChange = (list: Subscription.Processors) => {
   if (!form.value) return;
   form.value.process = [...list];

@@ -7,6 +7,8 @@
     size="huge"
     :bordered="false"
     :segmented="{ content: 'soft', footer: 'soft' }"
+    @mask-click="emits('close')"
+    @close="emits('close')"
   >
     <n-list clickable hoverable>
       <n-list-item
@@ -42,10 +44,6 @@ const props = defineProps<{
 }>();
 const emits = defineEmits<{
   (e: 'add', name: string): void;
+  (e: 'close'): void;
 }>();
-
-// const addProcessor = (name: string) => {
-//   console.log('add Processor ', name);
-//   emits('add', name);
-// };
 </script>

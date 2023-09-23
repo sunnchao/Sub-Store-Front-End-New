@@ -19,6 +19,8 @@
               {{ processor.module.version }}
             </n-tag>
           </div>
+
+          <!-- 模块操作 -->
           <div>close</div>
         </div>
 
@@ -93,10 +95,6 @@
           </n-grid>
         </div>
       </n-thing>
-
-      <!--      <template #suffix> -->
-      <!--        <n-button>Suffix</n-button> -->
-      <!--      </template> -->
     </n-list-item>
   </n-list>
 </template>
