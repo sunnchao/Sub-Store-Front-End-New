@@ -397,7 +397,7 @@ onMounted(async () => {
   initForm = JSON.stringify({ ...form.value });
 });
 
-onBeforeRouteLeave((to, from, next) => {
+onBeforeRouteLeave((_, __, next) => {
   if (JSON.stringify(form.value) !== initForm) {
     dialog.warning({
       title: '警告',

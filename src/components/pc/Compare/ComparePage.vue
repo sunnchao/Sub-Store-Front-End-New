@@ -30,12 +30,12 @@ import { NTag } from 'naive-ui';
 import { computed, h, toRaw } from 'vue';
 
 const props = defineProps<{
-  data: Compare.Data
+  data: Compare.Data;
 }>();
 
-type RowAction = {
-  showInfo: (row: Compare.NodeInfo) => void
-};
+// type RowAction = {
+//   showInfo: (row: Compare.NodeInfo) => void;
+// };
 
 const rowKey = (rowData: Compare.NodeInfo) => rowData.id + rowData.name;
 const getTagType = (rowData: Compare.NodeInfo) => {
@@ -112,9 +112,7 @@ const columnBaseOptions: DataTableColumns<Compare.NodeInfo> = [
   },
 ];
 
-const createCompareColumns = ({
-  showInfo,
-}: RowAction): DataTableColumns<Compare.NodeInfo> => {
+const createCompareColumns = (): DataTableColumns<Compare.NodeInfo> => {
   return [
     {
       title: 'ID',
@@ -139,10 +137,10 @@ const createCompareColumns = ({
       key: 'name',
       resizable: true,
       render(row, rowIndex) {
-        const type = rowIndex % 2 === 0 ? '' : 'success';
+        const type = rowIndex % 2 === 0 ? 'default' : 'success';
         const tagText = rowIndex % 2 === 0 ? 'Old' : 'New';
-        const textClass
-          = rowIndex % 2 === 0
+        const textClass =
+          rowIndex % 2 === 0
             ? 'text-text-tertiary-light dark:text-text-tertiary-dark'
             : 'text-text-primary-light dark:text-text-primary-dark font-medium';
         return h('div', { class: 'flex items-center gap-x-[8px]' }, [
@@ -179,9 +177,7 @@ const createCompareColumns = ({
   ];
 };
 
-const createExcludeColumns = ({
-  showInfo,
-}: RowAction): DataTableColumns<Compare.NodeInfo> => {
+const createExcludeColumns = (): DataTableColumns<Compare.NodeInfo> => {
   return [
     {
       title: 'ID',
@@ -238,6 +234,6 @@ const excludeList = computed(() => {
   });
 });
 
-const compareColumns = computed(() => createCompareColumns({ showInfo }));
-const excludeColumns = computed(() => createExcludeColumns({ showInfo }));
+const compareColumns = computed(() => createCompareColumns());
+const excludeColumns = computed(() => createExcludeColumns());
 </script>

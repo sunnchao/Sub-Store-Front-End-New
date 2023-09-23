@@ -9,9 +9,9 @@ const getBaseUrl = (): string => {
     ? (JSON.parse(dataStr) as Settings.BackendApiUrl)
     : CONSTANTS.BACKEND_API.INITIAL;
   return (
-    data.apis.find(api => api.name === data.current)?.url
-    ?? import.meta.env.VITE_API_URL
-    ?? 'https://sub.store'
+    data.apis.find(api => api.name === data.current)?.url ??
+    import.meta.env.VITE_API_URL ??
+    'https://sub.store'
   );
 };
 
@@ -30,12 +30,12 @@ service.interceptors.request.use(
 );
 
 type RequestOptions = {
-  onSucceed?: () => void
-  onError?: (originalError: AxiosError<APIRes.Error | string>) => void
+  onSucceed?: () => void;
+  onError?: (originalError: AxiosError<APIRes.Error | string>) => void;
 };
 
 type GetOptions = {
-  params?: Record<string, string>
+  params?: Record<string, string>;
 } & RequestOptions;
 export const getData = async <T>(
   url: string,
@@ -51,7 +51,7 @@ export const getData = async <T>(
           if (res.data.status === 'success') {
             resolve(res.data.data);
           } else {
-            resolve(res.data);
+            resolve(res.data as unknown as T);
           }
         } else {
           console.error(
@@ -70,7 +70,7 @@ export const getData = async <T>(
 };
 
 type PostOptions = {
-  data?: Record<string, any>
+  data?: Record<string, any>;
 } & RequestOptions;
 export const postData = async <T>(
   url: string,
@@ -104,7 +104,7 @@ export const postData = async <T>(
 };
 
 type PutOptions = {
-  data?: Record<string, string>
+  data?: Record<string, string>;
 } & RequestOptions;
 export const putData = async <T>(
   url: string,
@@ -138,7 +138,7 @@ export const putData = async <T>(
 };
 
 type PatchOptions = {
-  data?: Record<string, any>
+  data?: Record<string, any>;
 } & RequestOptions;
 export const patchData = async <T>(
   url: string,
@@ -172,7 +172,7 @@ export const patchData = async <T>(
 };
 
 type DeleteOptions = {
-  params?: Record<string, string>
+  params?: Record<string, string>;
 } & RequestOptions;
 export const deleteData = async <T>(
   url: string,
