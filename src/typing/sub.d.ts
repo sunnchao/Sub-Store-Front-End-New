@@ -41,6 +41,13 @@ declare namespace Subscription {
       error: string;
     };
 
-  type Processor = unknown;
+  type Processor = {
+    type: 'Script Operator';
+    args: {
+      content: string;
+      mode: 'link' | 'script';
+    };
+    id: number;
+  };
   type Processors = Processor[];
 }

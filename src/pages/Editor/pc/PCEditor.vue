@@ -104,6 +104,8 @@
         </n-button>
       </h2>
 
+      <Processor :value="form.process" @change="onProcessChange" />
+
       <n-divider />
 
       <div class="flex justify-end">
@@ -122,15 +124,19 @@
 
 <script setup lang="ts">
 import type { FormInst, SelectOption } from 'naive-ui';
+import { useDialog } from 'naive-ui';
 import { storeToRefs } from 'pinia';
 import type { VNodeChild } from 'vue';
 import { h, onMounted, ref } from 'vue';
 
 import AutoImage from '../../../components/pc/AutoImage.vue';
 import { useApi } from '../../../hooks/useApi.ts';
+import { useAppMessage } from '../../../hooks/useAppMessage.tsx';
+import { router } from '../../../routes';
 import { useModuleStore } from '../../../store/useModuleStore.ts';
 import { useSubscriptionStore } from '../../../store/useSubscriptionStore.ts';
 import AddProcessorModal from './components/AddProcessorModal.vue';
+import Processor from './components/Processor.vue';
 
 const props = defineProps<{
   name?: string;
@@ -153,14 +159,51 @@ const error = ref('');
 const form = ref<Subscription.Sub | Subscription.Collection | null>(null);
 const formRef = ref<FormInst | null>(null);
 
+const randomId = (): number => {
+  const id = Math.floor(Math.random() * 1000000);
+  return form.value?.process.some(p => p.id === id) ? randomId() : id;
+};
+
+const { showAppMessage } = useAppMessage();
 // 添加处理器
 const addProcessorModalIsVisible = ref(false);
 const addProcessor = (name: string) => {
   console.log('add Processor ', name);
   addProcessorModalIsVisible.value = false;
+  if (!form.value) return;
+  const module = modules.value.find(m => m.name === name);
+  if (!module) {
+    return showAppMessage({
+      type: 'error',
+      message: '未知模块',
+    });
+  }
+
+  let content = `/api/module/${name}`;
+  if (module.params) {
+    const paramsObj: Record<string, any> = {};
+    for (const key in module.params) {
+      paramsObj[key] = module.params[key].defaultValue ?? null;
+    }
+    content += `#${JSON.stringify(paramsObj)}`;
+    content = encodeURI(content);
+  }
+
+  form.value.process.push({
+    type: 'Script Operator',
+    args: {
+      content,
+      mode: 'link',
+    },
+    id: randomId(),
+  });
 };
 
 // TODO: 修改处理器数据
+const onProcessChange = (list: Subscription.Processors) => {
+  if (!form.value) return;
+  form.value.process = [...list];
+};
 
 // 组合订阅的单条订阅选项渲染函数
 const renderSubscriptionsLabel = (option: SelectOption): VNodeChild =>
@@ -248,7 +291,6 @@ const submitForm = (e: MouseEvent) => {
   e.preventDefault();
   formRef.value?.validate((errors) => {
     if (!errors) {
-      // console.log(form.value);
       emits('submit', form.value!);
     } else {
       console.log(errors);
@@ -256,6 +298,7 @@ const submitForm = (e: MouseEvent) => {
   });
 };
 
+const dialog = useDialog();
 const { subApi, moduleApi } = useApi();
 onMounted(async () => {
   loading.value = true;
@@ -290,6 +333,34 @@ onMounted(async () => {
         form.value = { ...collection };
       } else {
         error.value = '未找到该集合';
+      }
+    }
+
+    if (form.value) {
+      const hasOldProcess = form.value.process.some(
+        p =>
+          (p.type === 'Script Operator' && p.args.mode !== 'link') ||
+          p.type !== 'Script Operator',
+      );
+      if (hasOldProcess) {
+        // 如果含有旧的 process，弹窗提示
+        dialog.warning({
+          title: '警告',
+          content:
+            '此订阅包含旧版本订阅处理器，当前版本已全面迁移至模块处理，继续编辑并保存后旧处理器将被全部丢弃。如果依然需要在旧版本 Sub-Store 使用，建议拷贝一份订阅使用新版处理器哦～',
+          positiveText: '抛弃旧处理器，使用新版',
+          negativeText: '返回',
+          closable: false,
+          closeOnEsc: false,
+          maskClosable: false,
+          autoFocus: false,
+          onPositiveClick: () => {
+            form.value!.process = form.value!.process.filter(
+              p => p.type === 'Script Operator' && p.args.mode === 'link',
+            );
+          },
+          onNegativeClick: () => router.back(),
+        });
       }
     }
   } else {

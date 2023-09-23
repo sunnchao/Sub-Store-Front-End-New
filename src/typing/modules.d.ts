@@ -8,32 +8,32 @@ declare namespace Modules {
     description: string;
   } & (
     | {
-        dataType: "boolean";
-        defaultValue: boolean;
-      }
+      dataType: 'boolean';
+      defaultValue: boolean;
+    }
     | {
-        dataType: "string";
-        defaultValue: string;
-      }
+      dataType: 'string';
+      defaultValue: string;
+    }
     | {
-        dataType: "number";
-        defaultValue: number;
-      }
+      dataType: 'number';
+      defaultValue: number;
+    }
     | {
-        dataType: "select";
-        defaultValue: string;
-        options?: SelectOption[];
-      }
+      dataType: 'select';
+      defaultValue: string;
+      options?: SelectOption[];
+    }
     | {
-        dataType: "multiSelect";
-        defaultValue: string[];
-        options?: SelectOption[];
-      }
+      dataType: 'multiSelect';
+      defaultValue: string[];
+      options?: SelectOption[];
+    }
   );
   type Params = Record<string, Param>;
 
   type Form = {
-    moduleType: "local" | "remote";
+    moduleType: 'local' | 'remote';
     displayName: string;
     localContent: string;
     url: string;
