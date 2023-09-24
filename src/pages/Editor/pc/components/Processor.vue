@@ -84,6 +84,7 @@
                 v-if="param.dataType === 'string'"
                 :value="processor.values[key]"
                 type="textarea"
+                :placeholder="param.placeholder ?? ''"
                 :autosize="{ minRows: 1, maxRows: 3 }"
                 @update:value="(v) => updateValue(processor.id, key, v)"
               />
@@ -91,6 +92,7 @@
               <n-input-number
                 v-if="param.dataType === 'number'"
                 :value="processor.values[key]"
+                :placeholder="param.placeholder ?? ''"
                 @update:value="(v) => updateValue(processor.id, key, v)"
               />
 

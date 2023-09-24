@@ -15,10 +15,12 @@ declare namespace Modules {
     | {
       dataType: 'string';
       defaultValue: string;
+      placeholder?: string;
     }
     | {
       dataType: 'number';
       defaultValue: number;
+      placeholder?: string;
     }
     | {
       dataType: 'select';
