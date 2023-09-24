@@ -85,6 +85,7 @@
                 :value="processor.values[key]"
                 type="textarea"
                 :placeholder="param.placeholder ?? ''"
+                clearable
                 :autosize="{ minRows: 1, maxRows: 3 }"
                 @update:value="(v) => updateValue(processor.id, key, v)"
               />
@@ -93,6 +94,7 @@
                 v-if="param.dataType === 'number'"
                 :value="processor.values[key]"
                 :placeholder="param.placeholder ?? ''"
+                clearable
                 @update:value="(v) => updateValue(processor.id, key, v)"
               />
 
