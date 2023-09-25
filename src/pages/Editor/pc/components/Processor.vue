@@ -62,10 +62,15 @@
             >
               <p class="mb-[4px] flex items-center font-medium">
                 {{ param.name || key }}
-                <n-popover trigger="hover">
+                <n-popover
+                  trigger="manual"
+                  :show="showPopoverKey.includes(key)"
+                >
                   <template #trigger>
                     <i
                       class="i-solar-info-circle-linear ml-[6px] inline-block text-[16px] opacity-48"
+                      @mouseenter="showPopover(key)"
+                      @mouseleave="closePopover(key)"
                     />
                   </template>
                   <p>{{ `${param.description}` }}</p>
@@ -88,6 +93,8 @@
                 clearable
                 :autosize="{ minRows: 1, maxRows: 3 }"
                 @update:value="(v) => updateValue(processor.id, key, v)"
+                @focus="showPopover(key)"
+                @blur="closePopover(key)"
               />
 
               <n-input-number
@@ -96,6 +103,8 @@
                 :placeholder="param.placeholder ?? ''"
                 clearable
                 @update:value="(v) => updateValue(processor.id, key, v)"
+                @focus="showPopover(key)"
+                @blur="closePopover(key)"
               />
 
               <n-select
@@ -103,6 +112,8 @@
                 :value="processor.values[key]"
                 :options="param.options"
                 @update:value="(v) => updateValue(processor.id, key, v)"
+                @focus="showPopover(key)"
+                @blur="closePopover(key)"
               />
 
               <n-select
@@ -111,6 +122,8 @@
                 :value="processor.values[key]"
                 :options="param.options"
                 @update:value="(v) => updateValue(processor.id, key, v)"
+                @focus="showPopover(key)"
+                @blur="closePopover(key)"
               />
             </n-grid-item>
           </n-grid>
@@ -122,7 +135,7 @@
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 
 import { useModuleStore } from '../../../../store/useModuleStore.ts';
 
@@ -205,5 +218,13 @@ const deleteProcessor = (id: number) => {
   if (index === -1) return;
   processCopy.splice(index, 1);
   emits('change', processCopy);
+};
+
+const showPopoverKey = ref<string[]>([]);
+const showPopover = (key: string) => {
+  showPopoverKey.value.push(key);
+};
+const closePopover = (key: string) => {
+  showPopoverKey.value = showPopoverKey.value.filter(k => k !== key);
 };
 </script>
