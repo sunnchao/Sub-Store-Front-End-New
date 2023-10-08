@@ -22,7 +22,7 @@
         </p>
       </template>
 
-      <n-ellipsis :line-clamp="2" :tooltip="false">
+      <n-ellipsis :line-clamp="2" :tooltip="false" class="min-h-[48px]">
         {{ props.module.description }}
       </n-ellipsis>
 
@@ -52,7 +52,7 @@ import { ref } from 'vue';
 import ModuleItemActions from './ModuleItemActions.vue';
 
 const props = defineProps<{
-  module: Modules.BackendModule
+  module: Modules.BackendModule;
 }>();
 
 const card = ref<HTMLElement | null>(null);
