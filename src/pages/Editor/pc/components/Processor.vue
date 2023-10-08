@@ -10,7 +10,7 @@
       <n-thing v-if="processor.module && !processor.text">
         <div class="mt-[16px] flex items-center justify-between">
           <div class="flex items-center justify-center">
-            <h1 class="text-[20px] font-medium">
+            <h1 class="text-[16px] font-medium">
               {{ processor.module.displayName }}
             </h1>
             <n-divider vertical />
@@ -41,12 +41,12 @@
           </div>
         </div>
 
-        <p class="my-[16px]">
+        <n-ellipsis line-clamp="1" class="my-[16px]">
           {{ processor.module?.description }}
-        </p>
+        </n-ellipsis>
 
         <div>
-          <h2 class="text-[16px] font-medium">
+          <h2 class="text-[14px] font-medium">
             配置参数
           </h2>
 
