@@ -64,13 +64,13 @@
                 {{ param.name || key }}
                 <n-popover
                   trigger="manual"
-                  :show="showPopoverKey.includes(key)"
+                  :show="showPopoverKey.includes(processor.id + key)"
                 >
                   <template #trigger>
                     <i
                       class="i-solar-info-circle-linear ml-[6px] inline-block text-[16px] opacity-48"
-                      @mouseenter="showPopover(key)"
-                      @mouseleave="closePopover(key)"
+                      @mouseenter="showPopover(processor.id + key)"
+                      @mouseleave="closePopover(processor.id + key)"
                     />
                   </template>
                   <p>{{ `${param.description}` }}</p>
@@ -93,8 +93,8 @@
                 clearable
                 :autosize="{ minRows: 1, maxRows: 3 }"
                 @update:value="(v) => updateValue(processor.id, key, v)"
-                @focus="showPopover(key)"
-                @blur="closePopover(key)"
+                @focus="showPopover(processor.id + key)"
+                @blur="closePopover(processor.id + key)"
               />
 
               <n-input-number
@@ -103,8 +103,8 @@
                 :placeholder="param.placeholder ?? ''"
                 clearable
                 @update:value="(v) => updateValue(processor.id, key, v)"
-                @focus="showPopover(key)"
-                @blur="closePopover(key)"
+                @focus="showPopover(processor.id + key)"
+                @blur="closePopover(processor.id + key)"
               />
 
               <n-select
@@ -112,8 +112,8 @@
                 :value="processor.values[key]"
                 :options="param.options"
                 @update:value="(v) => updateValue(processor.id, key, v)"
-                @focus="showPopover(key)"
-                @blur="closePopover(key)"
+                @focus="showPopover(processor.id + key)"
+                @blur="closePopover(processor.id + key)"
               />
 
               <n-select
@@ -122,8 +122,8 @@
                 :value="processor.values[key]"
                 :options="param.options"
                 @update:value="(v) => updateValue(processor.id, key, v)"
-                @focus="showPopover(key)"
-                @blur="closePopover(key)"
+                @focus="showPopover(processor.id + key)"
+                @blur="closePopover(processor.id + key)"
               />
             </n-grid-item>
           </n-grid>
