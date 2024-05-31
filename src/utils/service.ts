@@ -1,7 +1,7 @@
 import type { AxiosError } from 'axios';
 import axios from 'axios';
 
-import { CONSTANTS } from '../constants';
+// import { CONSTANTS } from '../constants';
 
 // const getBaseUrl = (): string => {
 //   const dataStr = localStorage.getItem(CONSTANTS.BACKEND_API.LS_KEY);
