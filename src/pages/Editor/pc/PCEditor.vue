@@ -12,7 +12,7 @@
     <n-form v-if="form" ref="formRef" :model="form" :rules="rules as any">
       <n-grid :cols="24" :x-gap="24">
         <n-form-item-gi :span="12" label="标识名称" path="name">
-          <n-input v-model:value="form.name" placeholder="请输入唯一标识名称" />
+          <n-input v-model:value="form.name" placeholder="请输入唯一标识名称" disabled /> 
         </n-form-item-gi>
         <n-form-item-gi :span="12" label="展示名称" path="displayName">
           <n-input
@@ -79,8 +79,8 @@
         <n-form-item label="包含子订阅" path="subscriptions">
           <n-select
             v-model:value="(form as Subscription.Collection).subscriptions"
-            multiple
-            filterable
+            
+            filterable multiple 
             :options="
               subs.map((s) => ({
                 value: s.name,
@@ -127,6 +127,7 @@
 import type { FormInst, SelectOption } from 'naive-ui';
 import { useDialog } from 'naive-ui';
 import { storeToRefs } from 'pinia';
+import { v4 as uuidV4 } from 'uuid';
 import type { VNodeChild } from 'vue';
 import { h, onMounted, ref } from 'vue';
 import { onBeforeRouteLeave } from 'vue-router';
@@ -139,6 +140,7 @@ import { useModuleStore } from '../../../store/useModuleStore.ts';
 import { useSubscriptionStore } from '../../../store/useSubscriptionStore.ts';
 import AddProcessorModal from './components/AddProcessorModal.vue';
 import Processor from './components/Processor.vue';
+
 
 const props = defineProps<{
   name?: string;
@@ -160,6 +162,7 @@ const loading = ref(false);
 const error = ref('');
 const form = ref<Subscription.Sub | Subscription.Collection | null>(null);
 const formRef = ref<FormInst | null>(null);
+
 
 // 用来保留旧数据，在路由切换时候校验提示保存数据
 let initForm = '';
@@ -376,7 +379,7 @@ onMounted(async () => {
         content: '',
         displayName: '',
         icon: '',
-        name: '',
+        name: uuidV4(),
         source: 'remote',
         ua: '',
         url: '',
@@ -386,7 +389,7 @@ onMounted(async () => {
       form.value = {
         displayName: '',
         icon: '',
-        name: '',
+        name: uuidV4(),
         subscriptions: [],
         process: [],
       };

@@ -16,4 +16,15 @@ export default defineConfig({
     }),
     UnoCSS(),
   ],
+  server: {
+    proxy: {
+      '/api': {
+
+        target: 'https://sub-store-services.saiban.free.hr',
+
+        changeOrigin: true,
+
+      },
+    },
+  },
 });

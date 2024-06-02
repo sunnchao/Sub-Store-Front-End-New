@@ -15,7 +15,7 @@ import PCEditor from './pc/PCEditor.vue';
 const { isPc } = useScreen();
 
 const route = useRoute();
-const type = route.params.type as Components.SubType;
+const type = route.params.type as Components.SubType; 
 
 const router = useRouter();
 const { showAppMessage } = useAppMessage();
