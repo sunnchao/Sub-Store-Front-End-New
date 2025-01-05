@@ -1,5 +1,5 @@
 <template>
-  <n-grid :x-gap="12" :y-gap="12" :cols="3">
+  <n-grid :x-gap="12" :y-gap="12" :cols="isPc ? 3 : 2">
     <n-grid-item v-for="item in items" :key="item.name">
       <n-card size="small">
         <n-space vertical class="items-center">
@@ -47,14 +47,17 @@ import { computed } from 'vue';
 
 import { useCopySubsLink } from '../../../../hooks/useCopySubsLink.ts';
 import { useLogo } from '../../../../hooks/useLogo.ts';
+import { useScreen } from '../../../../hooks/useScreen.ts';
 
 const props = defineProps<{
-  name: string
-  type: Components.SubType
+  name: string;
+  type: Components.SubType;
 }>();
 
 const { copyLink, getLink } = useCopySubsLink();
 const { appLogo, toolLogo } = useLogo();
+
+const { isPc } = useScreen();
 
 const items = computed<
   { name: string; icon: string; tool: Utils.ProxyTools }[]

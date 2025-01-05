@@ -1,18 +1,12 @@
 <template>
-  <template v-if="isPc">
-    <n-config-provider :theme="theme" class="h-full" :hljs="hljs">
-      <n-message-provider>
-        <n-dialog-provider>
-          <NaiveConfig />
-        </n-dialog-provider>
-      </n-message-provider>
-      <n-global-style />
-    </n-config-provider>
-  </template>
-
-  <template v-else>
-    <router-view />
-  </template>
+  <n-config-provider :theme="theme" class="h-full" :hljs="hljs">
+    <n-message-provider>
+      <n-dialog-provider>
+        <NaiveConfig />
+      </n-dialog-provider>
+    </n-message-provider>
+    <n-global-style />
+  </n-config-provider>
 </template>
 
 <script setup lang="ts">

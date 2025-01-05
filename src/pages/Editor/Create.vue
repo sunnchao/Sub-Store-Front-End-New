@@ -1,6 +1,5 @@
 <template>
-  <PCEditor v-if="isPc" :type="type" @submit="onSubmit" />
-  <H5Editor v-else />
+  <PCEditor :type="type" @submit="onSubmit" />
 </template>
 
 <script setup lang="ts">
@@ -9,13 +8,12 @@ import { useRoute, useRouter } from 'vue-router';
 import { useApi } from '../../hooks/useApi.ts';
 import { useAppMessage } from '../../hooks/useAppMessage.tsx';
 import { useScreen } from '../../hooks/useScreen.ts';
-import H5Editor from './h5/H5Editor.vue';
 import PCEditor from './pc/PCEditor.vue';
 
 const { isPc } = useScreen();
 
 const route = useRoute();
-const type = route.params.type as Components.SubType; 
+const type = route.params.type as Components.SubType;
 
 const router = useRouter();
 const { showAppMessage } = useAppMessage();

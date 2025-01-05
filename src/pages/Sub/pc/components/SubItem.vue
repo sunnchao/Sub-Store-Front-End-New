@@ -13,7 +13,9 @@
       <template #header>
         {{ props.sub.displayName || props.sub.name }}
       </template>
-      <template #header-extra>
+      <div
+        class="h-[48px] flex items-center py-[8px] text-text-tertiary-light dark:text-text-tertiary-dark"
+      >
         <n-tag
           :type="
             props.sub.source === 'remote'
@@ -31,8 +33,7 @@
                 : "未知"
           }}
         </n-tag>
-      </template>
-
+      </div>
       <div
         class="h-[48px] flex items-center py-[8px] text-text-tertiary-light dark:text-text-tertiary-dark"
       >
@@ -98,7 +99,7 @@ import { formatFlow } from '../../../../utils/formatFlow.ts';
 import SubItemActions from './SubItemActions.vue';
 
 const props = defineProps<{
-  sub: Subscription.Sub
+  sub: Subscription.Sub;
 }>();
 
 const subscriptionStore = useSubscriptionStore();
@@ -106,8 +107,8 @@ const { flows } = storeToRefs(subscriptionStore);
 const flow = computed<Subscription.StoreFlow>(() => flows.value[props.sub.url]);
 
 type ProgressInfo = {
-  status: 'default' | 'success' | 'error' | 'warning' | 'info'
-  percentage: number
+  status: 'default' | 'success' | 'error' | 'warning' | 'info';
+  percentage: number;
 };
 const progressInfo = computed<ProgressInfo>(() => {
   if (flow.value?.status !== 'success') {
@@ -127,9 +128,9 @@ const progressInfo = computed<ProgressInfo>(() => {
 });
 
 type FlowInfo = {
-  usageText: string
-  expiresText: string
-  remainingText: string
+  usageText: string;
+  expiresText: string;
+  remainingText: string;
 };
 const flowInfo = computed<FlowInfo>(() => {
   const formattedFlow

@@ -1,11 +1,9 @@
 <template>
   <PCCompare
-    v-if="isPc"
     :loading="loading"
     :error="error"
     :compare-data="compareData"
   />
-  <H5Compare v-else />
 </template>
 
 <script setup lang="ts">
@@ -16,7 +14,6 @@ import { useRoute } from 'vue-router';
 import { useApi } from '../../hooks/useApi.ts';
 import { useScreen } from '../../hooks/useScreen.ts';
 import { useSubscriptionStore } from '../../store/useSubscriptionStore.ts';
-import H5Compare from './h5/H5Compare.vue';
 import PCCompare from './pc/PCCompare.vue';
 
 const { isPc } = useScreen();

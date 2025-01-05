@@ -10,11 +10,11 @@
     />
 
     <n-form v-if="form" ref="formRef" :model="form" :rules="rules as any">
-      <n-grid :cols="24" :x-gap="24">
-        <n-form-item-gi :span="12" label="标识名称" path="name">
-          <n-input v-model:value="form.name" placeholder="请输入唯一标识名称" disabled /> 
+      <n-grid :cols="24" :x-gap="isPc ? 24 : 0">
+        <n-form-item-gi :span="!isPc ? 24 : 12" label="标识名称" path="name">
+          <n-input v-model:value="form.name" placeholder="请输入唯一标识名称" disabled />
         </n-form-item-gi>
-        <n-form-item-gi :span="12" label="展示名称" path="displayName">
+        <n-form-item-gi :span="!isPc ? 24 : 12" label="展示名称" path="displayName">
           <n-input
             v-model:value="form.displayName"
             placeholder="请输入订阅展示名称"
@@ -22,14 +22,14 @@
         </n-form-item-gi>
       </n-grid>
 
-      <n-grid :cols="24" :x-gap="24">
-        <n-form-item-gi :span="18" label="订阅图标" path="icon">
+      <n-grid :cols="24" :x-gap="isPc ? 24 : 0">
+        <n-form-item-gi :span="24" label="订阅图标" path="icon">
           <n-input
             v-model:value="form.icon"
             placeholder="请输入订阅图标地址或 base64 字符串，推荐 png/webp 等包含 alpha 通道的格式"
           />
         </n-form-item-gi>
-        <n-grid-item :span="6" class="flex items-center gap-x-[8px]">
+        <n-grid-item :span="24" class="flex items-center gap-x-[8px]">
           图标预览：
           <AutoImage :src="form.icon" height="64px" />
         </n-grid-item>
@@ -65,10 +65,7 @@
               v-model:value="(form as Subscription.Sub).content"
               type="textarea"
               placeholder="请输入节点信息，支持格式请查看"
-              :autosize="{
-                minRows: 5,
-                maxRows: 12,
-              }"
+              :autosize="true"
             />
           </n-form-item>
         </template>
@@ -79,8 +76,8 @@
         <n-form-item label="包含子订阅" path="subscriptions">
           <n-select
             v-model:value="(form as Subscription.Collection).subscriptions"
-            
-            filterable multiple 
+
+            filterable multiple
             :options="
               subs.map((s) => ({
                 value: s.name,
@@ -135,12 +132,12 @@ import { onBeforeRouteLeave } from 'vue-router';
 import AutoImage from '../../../components/pc/AutoImage.vue';
 import { useApi } from '../../../hooks/useApi.ts';
 import { useAppMessage } from '../../../hooks/useAppMessage.tsx';
+import { useScreen } from '../../../hooks/useScreen.ts';
 import { router } from '../../../routes';
 import { useModuleStore } from '../../../store/useModuleStore.ts';
 import { useSubscriptionStore } from '../../../store/useSubscriptionStore.ts';
 import AddProcessorModal from './components/AddProcessorModal.vue';
 import Processor from './components/Processor.vue';
-
 
 const props = defineProps<{
   name?: string;
@@ -163,6 +160,7 @@ const error = ref('');
 const form = ref<Subscription.Sub | Subscription.Collection | null>(null);
 const formRef = ref<FormInst | null>(null);
 
+const { isPc } = useScreen();
 
 // 用来保留旧数据，在路由切换时候校验提示保存数据
 let initForm = '';
@@ -253,8 +251,8 @@ const rules = {
         if (!value) {
           return true;
         } else if (
-          !/^https?:\/\/.+$/.test(value) &&
-          !/^data:image.+$/.test(value)
+          !/^https?:\/\/.+$/.test(value)
+          && !/^data:image.+$/.test(value)
         ) {
           return new Error('图标地址应以 http(s)?:// 或 data:image 开头');
         }
@@ -349,8 +347,8 @@ onMounted(async () => {
     if (form.value) {
       const hasOldProcess = form.value.process.some(
         p =>
-          (p.type === 'Script Operator' && p.args.mode !== 'link') ||
-          p.type !== 'Script Operator',
+          (p.type === 'Script Operator' && p.args.mode !== 'link')
+          || p.type !== 'Script Operator',
       );
       if (hasOldProcess) {
         // 如果含有旧的 process，弹窗提示

@@ -26,18 +26,28 @@
 
 <script setup lang="ts">
 import type { MenuOption } from 'naive-ui';
-import { computed, h, ref } from 'vue';
+import { computed, h, ref, watch } from 'vue';
 import { RouterLink, useRoute } from 'vue-router';
 
 import SideMenuBackendCard from '../../components/pc/SideMenuBackendCard.vue';
 import { useLocalSettings } from '../../hooks/useLocalSettings.ts';
+import { useScreen } from '../../hooks/useScreen.ts';
 
 const { localSettings } = useLocalSettings();
 
-const collapsed = ref(false);
+const collapsed = ref(true);
 // const activeKey = ref('');
 const route = useRoute();
 const activeKey = computed(() => route.fullPath.split('/')[1]);
+
+const { isPc } = useScreen();
+
+watch(() => isPc.value, () => {
+  collapsed.value = !isPc.value;
+}, {
+  deep: true,
+  immediate: true,
+});
 
 const menuOptions = computed<MenuOption[]>(() => {
   return [
